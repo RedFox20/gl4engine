@@ -14,12 +14,25 @@ float radf(float degrees) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+float vec2_len(vec2 v)   { return sqrtf(v.x*v.x + v.y*v.y); }
+float vec2_sqlen(vec2 v) { return v.x*v.x + v.y*v.y; }
+vec2 vec2_norm(vec2 v) {
+	float sqr = v.x*v.x + v.y*v.y;
+	float inv = 1.0f / sqrtf(sqr);
+	retvec2(v.x*inv, v.y*inv);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+vec3 vec3_new(float x, float y, float z) { retvec3(x,y,z); }
 vec3 vec3_cross(vec3 a, vec3 b) {
 	retvec3(a.y*b.z - b.y*a.z, a.z*b.x - b.z*a.x, a.x*b.y - b.x*a.y);
 }
 float vec3_dot(vec3 a, vec3 b) {
 	return a.x*b.x + a.y*b.y + a.z*b.z;
 }
+float vec3_len(vec3 v)   { return sqrtf(v.x*v.x + v.y*v.y + v.z*v.z); }
+float vec3_sqlen(vec3 v) { return v.x*v.x + v.y*v.y + v.z*v.z; }
 vec3 vec3_norm(vec3 v) {
 	float sqr = v.x*v.x + v.y*v.y + v.z*v.z;
 	float inv = 1.0f / sqrtf(sqr);
@@ -36,6 +49,7 @@ vec3 vec3_divf(vec3 a, float v) { retvec3(a.x/v, a.y/v, a.z/v); }
 
 ////////////////////////////////////////////////////////////////////////////////
 
+vec4 vec4_new(float x, float y, float z, float w) { retvec4(x,y,z,w); }
 vec4 vec4_add(vec4 a, vec4 b)   { retvec4(a.x+b.x, a.y+b.y, a.z+b.z, a.w+b.w); }
 vec4 vec4_sub(vec4 a, vec4 b)   { retvec4(a.x-b.x, a.y-b.y, a.z-b.z, a.w-b.w); }
 vec4 vec4_mul(vec4 a, vec4 b)   { retvec4(a.x*b.x, a.y*b.y, a.z*b.z, a.w*b.w); }

@@ -6,11 +6,11 @@
 
 vertex_t* model_vertices(BMDModel* model)
 {
-	return (vertex_t*)((char*)model + model->OffVerts);
+	return (vertex_t*)((char*)model + model->off_verts);
 }
 index_t* model_indices(BMDModel* model)
 {
-	return (index_t*)((char*)model + model->OffInds);
+	return (index_t*)((char*)model + model->off_indices);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@ index_t* model_indices(BMDModel* model)
 static void _mesh_free(StaticMesh* sm)
 {
 	if (sm->model) free(sm->model);
-	if (sm->data)  va_destroy(sm->data);
+	if (sm->array)  va_destroy(sm->array);
 }
 static bool _mesh_load(StaticMesh* sm, const char* fullPath)
 {
@@ -41,26 +41,26 @@ static bool _mesh_load(StaticMesh* sm, const char* fullPath)
 
 	// finalize mesh data by uploading it to the GPU
 	vertex_descr descr = { sizeof(vertex_t), a_Position,3, a_Coord,2, a_Normal,3 };
-	sm->data = va_new_indexed_array(
-		model_vertices(m), m->NumVertices,
-		model_indices(m),  m->NumIndices, descr 
+	sm->array = va_new_indexed_array(
+		model_vertices(m), m->num_verts,
+		model_indices(m),  m->num_indices, descr 
 	);
 
 	#if DEBUG
 		printf("------------------\n");
 		printf("FileSize: %d\n", size);
-		printf("Loaded model   %s (%dKB)\n", m->Name, size / 1024);
-		printf("  Texture      %s\n", m->TexName);
-		printf("  NumVertices  %d\n", m->NumVertices);
-		printf("  NumIndices   %d\n", m->NumIndices);
-		printf("  Polys        %d\n", m->NumIndices/3);
+		printf("Loaded model   %s (%dKB)\n", m->name, size / 1024);
+		printf("  Texture      %s\n", m->tex_name);
+		printf("  NumVertices  %d\n", m->num_verts);
+		printf("  NumIndices   %d\n", m->num_indices);
+		printf("  Polys        %d\n", m->num_indices/3);
 		vertex_t* verts   = model_vertices(m);
 		index_t*  indices = model_indices(m);
-		for (int i = 0; i < 20 && i < m->NumVertices; ++i) {
+		for (int i = 0; i < 20 && i < m->num_verts; ++i) {
 			vertex_t* v = &verts[i];
 			printf("  v%d   %f,	%f,	%f	%f,	%f\n", i,v->x,v->y,v->z, v->u,v->v);
 		}
-		for (int i = 0; i < 20 && i < m->NumIndices; i += 3) {
+		for (int i = 0; i < 20 && i < m->num_indices; i += 3) {
 			printf("  f%d    %d %d %d\n", (i/3), indices[i], indices[i+1], indices[i+2]);
 		}
 		printf("-------------------\n");
@@ -76,7 +76,9 @@ void mesh_free(StaticMesh* mesh) {
 	resource_free(&mesh->res);
 }
 MeshManager* mesh_manager_create(int maxCount) {
-	return (MeshManager*)res_manager_create(maxCount, sizeof(StaticMesh), 
+	static int id = 0;
+	char name[32]; snprintf(name, 32, "mesh_manager_$%d_[%d]", id++, maxCount);
+	return (MeshManager*)res_manager_create(name, maxCount, sizeof(StaticMesh), 
 		(ResMgr_LoadFunc)_mesh_load, (ResMgr_FreeFunc)_mesh_free);
 }
 void mesh_manager_destroy(MeshManager* m) {

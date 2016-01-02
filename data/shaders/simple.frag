@@ -1,10 +1,11 @@
-#version 150 // OpenGL 3.2
+#version 330 // OpenGL 3.3
  
-varying vec2 vCoord;          // vertex texture coordinates
+uniform sampler2D diffuseTex; // diffuse texture
+in vec2 vCoord;               // vertex texture coords
 
-uniform sampler2D texture;
+out vec4 fragColor; // output pixel color 
 
 void main(void)
 {
-	gl_FragColor = texture2D(texture, vCoord);
+	fragColor = texture(diffuseTex, vCoord);
 }

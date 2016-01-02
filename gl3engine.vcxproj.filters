@@ -81,16 +81,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
-    <None Include="data\shaders\simple.frag">
+    <None Include="data\shaders\v3f-t2f-c4f.frag">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="data\shaders\v3f-t2f-c4f.vert">
       <Filter>data\shaders</Filter>
     </None>
     <None Include="data\shaders\simple.vert">
       <Filter>data\shaders</Filter>
     </None>
-    <None Include="data\shaders\v3f-t2f-c4f.frag">
-      <Filter>data\shaders</Filter>
-    </None>
-    <None Include="data\shaders\v3f-t2f-c4f.vert">
+    <None Include="data\shaders\simple.frag">
       <Filter>data\shaders</Filter>
     </None>
   </ItemGroup>

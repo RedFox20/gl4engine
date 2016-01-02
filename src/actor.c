@@ -1,5 +1,6 @@
 #include "actor.h"
 #include <string.h>
+#include "util.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,9 +44,29 @@ static mat4* affine_transform(Actor* a, mat4* out)
 	return out;
 }
 
-void actor_draw(Actor* a, Shader* shader, const mat4* viewProjection)
+void actor_draw(Actor* a, const mat4* viewProjection)
 {
-	mat4 model;
-	affine_transform(a, &model);
+	Shader*  shader  = a->material.shader;
+	Texture* texture = a->material.texture;
+
+	if (!shader || !a->mesh || !a->mesh->array) {
+		LOG("actor_draw() error: attempted to draw without a shader or mesh\n");
+		return;
+	}
+
+	shader_bind(shader); // bind, but don't explicitly unbind
+	{
+		mat4 model;
+		affine_transform(a, &model);
+		shader_bind_mat_mvp(shader, viewProjection, &model);
+		shader_bind_tex_diffuse(shader, texture->glTexture);
+
+		shader_bind_attributes(shader);
+
+		// draw vertex_array bound to our mesh
+		va_draw(a->mesh->array);
+
+		shader_unbind_attributes(shader);
+	}
 }
 

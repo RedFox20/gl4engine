@@ -35,7 +35,9 @@ static bool _tex_load(Texture* tex, const char* fullPath)
 ////////////////////////////////////////////////////////////////////////////////
 
 TexManager* tex_manager_create(int maxCount) {
-	return (TexManager*)res_manager_create(maxCount, sizeof(Texture), 
+	static int id = 0;
+	char name[32]; snprintf(name, 32, "tex_manager_$%d_[%d]", id++, maxCount);
+	return (TexManager*)res_manager_create(name, maxCount, sizeof(Texture), 
 		(ResMgr_LoadFunc)_tex_load, (ResMgr_FreeFunc)_tex_free);
 }
 Texture* tex_manager_data(TexManager* t) {

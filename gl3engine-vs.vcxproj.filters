@@ -17,6 +17,12 @@
     <Filter Include="SOIL">
       <UniqueIdentifier>{13f6f684-4d63-4711-a935-75a69440aa97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{56c53745-d354-44ef-9522-32ac0a296029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders">
+      <UniqueIdentifier>{b8a2c33d-f5c1-4c04-bb99-9b3d8661af04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\material.h">
@@ -120,5 +126,24 @@
     <ClCompile Include="src\main.c">
       <Filter>src</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\shaders\simple.frag">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="data\shaders\simple.vert">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="data\shaders\v3f-t2f-c4f.frag">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="data\shaders\v3f-t2f-c4f.vert">
+      <Filter>data\shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="src\gl3engine.natvis">
+      <Filter>src\framework</Filter>
+    </Natvis>
   </ItemGroup>
 </Project>

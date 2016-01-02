@@ -37,6 +37,6 @@ bool actor_material(Actor* a, Material* mat);
 
 // draws this model in the specified viewprojection
 // and in the context of an already bound shader
-void actor_draw(Actor* a, Shader* shader, const mat4* viewProjection);
+void actor_draw(Actor* a, const mat4* viewProjection);
 
 ////////////////////////////////////////////////////////////////////////////////

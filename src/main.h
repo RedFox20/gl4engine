@@ -8,8 +8,3 @@
 #define GL_MULTISAMPLE  0x809D
 #endif
 
-
-extern const char* ForceString;
-
-
-

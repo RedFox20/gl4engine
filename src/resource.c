@@ -6,25 +6,12 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-static uint64_t fnv64(const void* data, size_t length)
-{
-	const uint8_t* p = (const uint8_t*)data;
-	uint64_t hash = 14695981039346656037ull;
-	for (size_t i = 0; i < length; ++i) {
-		hash ^= p[i];
-		hash *= 1099511628211ull;
-	}
-	return hash;
-}
 static int init_hash(uint64_t* outHash, const char* string)
 {
 	int slen = strlen(string);
 	*outHash = fnv64(string, slen);
 	return slen;
 }
-
-////////////////////////////////////////////////////////////////////////////////
-
 
 #define resmgr_begin(resmgr)      (Resource*)((char*)resmgr + sizeof(ResManager))
 #define resmgr_end(resmgr)        (Resource*)((char*)resmgr_begin(resmgr) + resmgr->maxCount * resmgr->sizeOf)
@@ -33,11 +20,12 @@ static int init_hash(uint64_t* outHash, const char* string)
 	const int SIZEOF = rm->sizeOf;       \
 	Resource* iter   = resmgr_begin(rm); \
 	Resource* e      = resmgr_end(rm);   \
-	for (int rem = rm->count; iter != e && (iter->hlen?--rem:rem)>0; resmgr_next(iter,SIZEOF))
+	for (int rem = rm->count; iter != e && (iter->hlen?rem--:rem)>0; resmgr_next(iter,SIZEOF))
 
 ////////////////////////////////////////////////////////////////////////////////
 
-ResManager* res_manager_create(int maxCount, int sizeOf, ResMgr_LoadFunc loadFunc, ResMgr_FreeFunc freeFunc)
+ResManager* res_manager_create(const char* name, int maxCount, int sizeOf, 
+	ResMgr_LoadFunc loadFunc, ResMgr_FreeFunc freeFunc)
 {
 	assert(sizeOf > sizeof(Resource) && 
 		"resmgr_init(): sizeOf not larger than sizeof(Resource)! "
@@ -46,9 +34,10 @@ ResManager* res_manager_create(int maxCount, int sizeOf, ResMgr_LoadFunc loadFun
 	const int totalBytes = sizeof(ResManager) + itemBytes;
 	ResManager* rm = malloc(totalBytes);
 	if (!rm) {
-		LOG("resmgr_init(): failed to allocate manager of size %d bytes\n", totalBytes);
+		LOG("resmgr_init(): failed to allocate manager '%s' of size %d bytes\n", name, totalBytes);
 		return NULL;
 	}
+	strncpy(rm->name, name, sizeof(rm->name));
 	rm->load     = loadFunc;
 	rm->free     = freeFunc;
 	rm->maxCount = maxCount;
@@ -108,6 +97,7 @@ Resource* resource_load(ResManager* rm, const char* relativePath)
 		free->fphlen = fphlen;
 		free->hash   = hash;
 		free->fphash = fphash;
+		free->path   = indebug(strdup(path)) inrelease(NULL);
 		++rm->count;
 		return free;
 	}
@@ -127,7 +117,7 @@ void resource_free(Resource* item)
 		}
 	}
 	LOG("resmgr_free_item(): Resource sizeOf(%d) not owned "
-		"by this ResManager. Critical leak.", rm->sizeOf);
+		"by this ResManager. Critical leak.\n", rm->sizeOf);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -139,6 +129,7 @@ void res_manager_clean_unused(ResManager* rm)
 			res->hlen = 0; // hlen=0 - this marks the slot as free
 			rm->free(res);
 			--rm->count;
+			indebug(free(res->path));
 		}
 	}
 }
@@ -150,6 +141,7 @@ void res_manager_destroy_all_items(ResManager* rm)
 			res->hlen = 0; // hlen=0 - this marks the slot as free
 			rm->free(res);
 			--rm->count;
+			indebug(free(res->path));
 		}
 	}
 }

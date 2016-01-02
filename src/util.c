@@ -28,6 +28,17 @@
 		fstat(fileno(f), &s);
 		return (int)s.st_size;
 	}
+
+	unsigned long long fnv64(const void* data, size_t length)
+	{
+		const unsigned char* p = (const unsigned char*)data;
+		unsigned long long hash = 14695981039346656037ull;
+		for (size_t i = 0; i < length; ++i) {
+			hash ^= p[i];
+			hash *= 1099511628211ull;
+		}
+		return hash;
+	}
 	
 	const char* datapath(const char* filename)
 	{
@@ -78,3 +89,5 @@
 		start = time; // reset start time
 		return deltaTime;
 	}
+
+

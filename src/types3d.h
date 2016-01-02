@@ -23,9 +23,19 @@ typedef struct vec4
 	float x, y, z, w;
 } vec4; // 4D float vector - used for Quaternions and RGBA colors
 
+////////////////////////////////////////////////////////////////////////////////
 
+float vec2_len(vec2 v);
+float vec2_sqlen(vec2 v);
+vec2 vec2_norm(vec2 v);
+
+////////////////////////////////////////////////////////////////////////////////
+
+vec3 vec3_new(float x, float y, float z);
 vec3 vec3_cross(vec3 a, vec3 b); // vec3 cross product:  r = a x b
 float vec3_dot(vec3 a, vec3 b);  // vec3 dot product:    r = a * b
+float vec3_len(vec3 v);
+float vec3_sqlen(vec3 v);
 vec3 vec3_norm(vec3 v);          // vec3 normalize:  
 vec3 vec3_add(vec3 a, vec3 b);   // vec3 add:  r = a + b
 vec3 vec3_sub(vec3 a, vec3 b);   // vec3 sub:  r = a - b
@@ -36,6 +46,9 @@ vec3 vec3_subf(vec3 a, float v);
 vec3 vec3_mulf(vec3 a, float v);
 vec3 vec3_divf(vec3 a, float v);
 
+////////////////////////////////////////////////////////////////////////////////
+
+vec4 vec4_new(float x, float y, float z, float w);
 vec4 vec4_add(vec4 a, vec4 b);   // vec4 add:  r = a + b
 vec4 vec4_sub(vec4 a, vec4 b);   // vec4 sub:  r = a - b
 vec4 vec4_mul(vec4 a, vec4 b);   // vec4 mul:  r = a * b
@@ -44,7 +57,6 @@ vec4 vec4_addf(vec4 a, float v);
 vec4 vec4_subf(vec4 a, float v);
 vec4 vec4_mulf(vec4 a, float v);
 vec4 vec4_divf(vec4 a, float v);
-
 
 ////////////////////////////////////////////////////////////////////////////////
 

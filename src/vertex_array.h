@@ -3,16 +3,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// vertex buffer object (uses VAO)
-typedef struct vertex_array
-{
-	unsigned vao;          // vertex array object
-	unsigned vbo;          // vertex buffer object
-	unsigned ebo;          // element buffer object (if exists)
-	unsigned num_verts;    // number of vertices
-	unsigned num_indices;  // num element buffer indices (if ebo exists)
-} vertex_array;
-
+// vertex layout descriptor
 typedef struct vertex_descr
 {
 	int sizeOf; // Size of your vertex struct in bytes eg: sizeof(Vertex3UV)
@@ -21,6 +12,18 @@ typedef struct vertex_descr
 		unsigned char size; // Number of elements per attribute (1-4 floats or ints)
 	} items[4];
 } vertex_descr;
+
+// vertex buffer object (uses VAO)
+typedef struct vertex_array
+{
+	unsigned vao;          // vertex array object
+	unsigned vbuf;          // vertex buffer object
+	unsigned ibuf;          // element buffer object (if exists)
+	unsigned num_verts;    // number of vertices
+	unsigned num_indices;  // num element buffer indices (if ebo exists)
+	vertex_descr vd; // vertex layout descriptor
+} vertex_array;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 

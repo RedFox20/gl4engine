@@ -5,6 +5,14 @@
 // can implement custom logging if needed
 #define LOG(fmt, ...) fprintf(stderr, fmt, ##__VA_ARGS__)
 
+#if DEBUG || _DEBUG
+	#define indebug(...)   __VA_ARGS__
+	#define inrelease(...) /*do nothing*/
+#else
+	#define indebug(...)   /*do nothing*/
+	#define inrelease(...) __VA_ARGS__
+#endif
+
 /**
  * Sleeps for the specified number of milliseconds
  */
@@ -14,6 +22,9 @@ void sleep_ms(int millis);
  * @return File size of an stdio FILE*
  */
 int fsize(FILE* f);
+
+/** @return 64-bit FNV-1a hash of data */
+unsigned long long fnv64(const void* data, size_t length);
 
 /**
  * Gets a "data/filename" string from the input "filename"

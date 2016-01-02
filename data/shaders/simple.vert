@@ -1,12 +1,12 @@
-#version 150 // OpenGL 3.2
+#version 330 // OpenGL 3.3
 
 uniform mat4 transform;     // transformation matrix
 
-attribute vec3 position;    // vertex position
-attribute vec2 coord;       // vertex texture coordinates
-attribute vec3 normal;      // vertex normal
+in vec3 position;    // in vertex position
+in vec2 coord;       // in vertex texture coordinates
+in vec3 normal;      // in vertex normal
 
-varying vec2 vCoord;        // out vertex texture coord for frag
+out vec2 vCoord;     // out vertex texture coord for frag
 
 void main(void)
 {

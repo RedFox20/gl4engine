@@ -61,7 +61,7 @@
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
-      <PreprocessorDefinitions>WIN32;_WIN32;GLEW_STATIC;_MBCS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN32;GLEW_STATIC;FREEGLUT_STATIC;_MBCS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>GL/glfw3-vc32d.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -77,7 +77,7 @@
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
-      <PreprocessorDefinitions>WIN32;_WIN32;GLEW_STATIC;_MBCS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN32;GLEW_STATIC;FREEGLUT_STATIC;_MBCS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -121,6 +121,15 @@
     <ClCompile Include="src\utf8.c" />
     <ClCompile Include="src\util.c" />
     <ClCompile Include="src\vertex_array.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\shaders\simple.frag" />
+    <None Include="data\shaders\simple.vert" />
+    <None Include="data\shaders\v3f-t2f-c4f.frag" />
+    <None Include="data\shaders\v3f-t2f-c4f.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="src\gl3engine.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

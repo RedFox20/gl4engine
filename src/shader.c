@@ -16,7 +16,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-static const char UniformMap[][16] = {
+static const char* UniformMap[] = {
 	"transform",     // u_Transform
 	"diffuseTex",    // u_DiffuseTex
 	"specularTex",   // u_SpecularTex
@@ -26,7 +26,7 @@ static const char UniformMap[][16] = {
 	"diffuseColor",  // u_DiffuseColor
 	"outlineColor",  // u_OutlineColor
 };
-static const char AttributeMap[][8] = {
+static const char* AttributeMap[] = {
 	"position",      // a_Position
 	"normal",        // a_Normal
 	"coord",         // a_Coord
@@ -113,7 +113,7 @@ static Shader* shader_init_unmanaged(Shader* s, const char* shaderName)
 	s->vs_mod = 0;
 	s->fs_mod = 0;
 	memset(s->uniforms,   -1, sizeof(s->uniforms));
-	memset(s->attributes, -1, sizeof(s->attributes));
+	memset(s->attributes, false, sizeof(s->attributes));
 	return s;
 }
 
@@ -186,8 +186,14 @@ void shader_load_uniforms(Shader* s)
 	for (int i = 0; numActive && i < u_MaxUniforms; ++i) {
 		int loc = glGetUniformLocation(s->program, UniformMap[i]);
 		if (loc != -1) --numActive;
-		s->uniforms[i] = (char)loc;
+		s->uniforms[i] = (char)loc; // always write result (incase of shader reload)
 	}
+	glGetProgramiv(s->program, GL_ACTIVE_ATTRIBUTES, &numActive);
+	for (int i = 0; i < a_MaxAttributes; ++i) {
+		int loc = glGetAttribLocation(s->program, AttributeMap[i]);
+		s->attributes[i] = loc != -1; // always write result (incase of shader reload)
+	}
+	numActive = 0;
 }
 
 void shader_bind(const Shader* s)
@@ -271,7 +277,9 @@ void shader_unbind_attributes(const Shader* s)
 
 // initializes a resource manager for ShaderManager Shader objects
 ShaderManager* shader_manager_create(int maxCount) {
-	return (ShaderManager*)res_manager_create(maxCount, sizeof(Shader), 
+	static int id = 0;
+	char name[32]; snprintf(name, 32, "shader_manager_$%d_[%d]", id++, maxCount);
+	return (ShaderManager*)res_manager_create(name, maxCount, sizeof(Shader), 
 		(ResMgr_LoadFunc)shader_load_unmanaged, (ResMgr_FreeFunc)shader_free_unmanaged);
 }
 Shader* shader_manager_data(ShaderManager* m) {

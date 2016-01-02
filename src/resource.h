@@ -7,12 +7,13 @@
 /** A generic managed resource, contains a reference count and resource path ID */
 typedef struct Resource
 {
-	int   refcount;         // @warning: not threadsafe (!)
+	int      refcount;      // @warning: not threadsafe (!)
 	struct ResManager* mgr; // reference to manager
 	int      hlen;          // length of path string
 	int      fphlen;        // length of path filepart string
 	uint64_t hash;          // 64-bit path hash
 	uint64_t fphash;        // 64-bit filepart hash
+	char*    path;          // path for debugging
 } Resource;
 
 typedef bool (*ResMgr_LoadFunc)(Resource* res, const char* fullPath);
@@ -21,6 +22,8 @@ typedef void (*ResMgr_FreeFunc)(Resource* res);
 /** Generic file resource manager for managing assets we do not wish to load multiple times */ 
 typedef struct ResManager
 {
+	char name[32]; // a small unique name identifier for the resource manager
+
 	ResMgr_LoadFunc load; // resource load func
 	ResMgr_FreeFunc free; // resource free func
 
@@ -53,7 +56,8 @@ void resource_free(Resource* res);
  * @param loadFunc Function to use when initializing a resource
  * @param freeFunc Function to use when destroying a resource
  */
-ResManager* res_manager_create(int maxCount, int sizeOf, ResMgr_LoadFunc loadFunc, ResMgr_FreeFunc freeFunc);
+ResManager* res_manager_create(const char* name, int maxCount, int sizeOf, 
+	ResMgr_LoadFunc loadFunc, ResMgr_FreeFunc freeFunc);
 
 /** @brief Destroys the resource manager and all its items*/
 void res_manager_destroy(ResManager* rm);

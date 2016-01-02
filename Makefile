@@ -1,6 +1,6 @@
 SRCS   = $(wildcard src/*.c)
 OBJS   = $(SRCS:src/%.c=obj/%.o)
-CFLAGS = -DGLEW_STATIC -m32 -march=native -mfpmath=sse -std=gnu11 -I. -IGL/ -Wall -Wno-unused-result -Wno-missing-braces
+CFLAGS = -DGLEW_STATIC -DFREEGLUT_STATIC -m32 -march=native -mfpmath=sse -std=gnu11 -I. -IGL/ -Wall -Wno-unused-result -Wno-missing-braces
 ifeq ($(OS),Windows_NT)
  OUT    = gl3engine.exe
  FORMAT = win32
@@ -9,7 +9,7 @@ ifeq ($(OS),Windows_NT)
 else
  OUT    = gl3engine
  FORMAT = elf32
- OPENGL = GL/libglfw3-linux32.a GL/libfreetype-linux32.a GL/libglew.a GL/libsoil.a -lGL 
+ OPENGL = GL/libglfw3-linux32.a GL/libfreetype-linux32.a GL/libglew.a GL/libsoil.a -lGL
  SYSLIB = 
 endif
 
@@ -31,8 +31,6 @@ install:
 else
 install:
 	sudo apt-get install libgl1-mesa-dev:i386
-	sudo apt-get install libglu1-mesa-dev:i386
-	sudo apt-get install freeglut3-dev:i386
 	sudo apt-get install libfreetype6-dev:i386
 endif
 	

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <!-- ///////////////////////////////////////////////////////////////////// -->
+
+  <Type Name="vec2">
+    <DisplayString>x={x} y={y}</DisplayString>
+    <Expand>
+      <Item Name="[sqlength]">x*x + y*y</Item>
+    </Expand>
+  </Type>
+  <Type Name="vec3">
+    <DisplayString>x={x} y={y} z={z}</DisplayString>
+    <Expand>
+      <Item Name="[sqlength]">x*x + y*y + z*z</Item>
+    </Expand>
+  </Type>
+  <Type Name="vec4">
+    <DisplayString>x={x} y={y} z={z} w={w}</DisplayString>
+    <Expand>
+      <Item Name="[sqlength]">x*x + y*y + z*z + w*w</Item>
+    </Expand>
+  </Type>
+  <Type Name="mat4">
+    <DisplayString>mat 4x4</DisplayString>
+    <Expand>
+      <Item Name="[row 0]">0.0</Item>
+    </Expand>
+  </Type>
+
+  <Type Name="vertex_t">
+    <DisplayString>{pos}</DisplayString>
+    <Expand>
+      <Item Name="[pos]">pos</Item>
+      <Item Name="[tex]">tex</Item>
+      <Item Name="[norm]">norm</Item>
+    </Expand>
+  </Type>
+
+  <!-- ///////////////////////////////////////////////////////////////////// -->
+
+  <Type Name="Resource">
+    <DisplayString Condition="hlen != 0">refs={refcount} id={path,na}</DisplayString>
+    <DisplayString Condition="hlen == 0">empty</DisplayString>
+    <Expand>
+      <Item Name="[refcnt]">refcount</Item>
+      <Item Name="[owner]">mgr</Item>
+      <Item Name="[path]">path,na</Item>
+    </Expand>
+  </Type>
+  <Type Name="Texture">
+    <DisplayString Condition="res.hlen != 0">refs={res.refcount} id={res.path,na}</DisplayString>
+    <DisplayString Condition="res.hlen == 0">empty</DisplayString>
+    <Expand>
+      <Item Name="[refcnt]">res.refcount</Item>
+      <Item Name="[owner]">res.mgr</Item>
+      <Item Name="[path]">res.path,na</Item>
+      
+      <Item Name="[tex_id]">glTexture</Item>
+      <Item Name="[image]">data</Item>
+    </Expand>
+  </Type>
+  <Type Name="Shader">
+    <DisplayString Condition="res.hlen != 0">refs={res.refcount} id={res.path,na}</DisplayString>
+    <DisplayString Condition="res.hlen == 0">empty</DisplayString>
+    <Expand>
+      <Item Name="[refcnt]">res.refcount</Item>
+      <Item Name="[owner]">res.mgr</Item>
+      <Item Name="[path]">res.path,na</Item>
+
+      <Item Name="[program]">program</Item>
+      <Item Name="[vert]">vs_path,na</Item>
+      <Item Name="[frag]">fs_path,na</Item>
+      <Item Name="[uniforms]">uniforms</Item>
+      <IndexListItems>
+        <Size>u_MaxUniforms</Size>
+        <ValueNode>(ShaderUniform)(uniforms[$i])</ValueNode>
+      </IndexListItems>
+      <Item Name="[attributes]">attributes</Item>
+      <IndexListItems>
+        <Size>a_MaxAttributes</Size>
+        <ValueNode>(ShaderAttr)(attributes[$i] ? $i : -1)</ValueNode>
+      </IndexListItems>
+    </Expand>
+  </Type>
+  <Type Name="StaticMesh">
+    <DisplayString Condition="res.hlen != 0">refs={res.refcount} id={res.path,na}</DisplayString>
+    <DisplayString Condition="res.hlen == 0">empty</DisplayString>
+    <Expand>
+      <Item Name="[refcnt]">res.refcount</Item>
+      <Item Name="[owner]">res.mgr</Item>
+      <Item Name="[path]">res.path,na</Item>
+
+      <Item Name="[modelKB]">size / 1024</Item>
+      <Item Name="[model]">model</Item>
+      <Item Name="[array]">array</Item>
+    </Expand>
+  </Type>
+  <Type Name="BMDModel">
+    <DisplayString>name={name,na} tex={tex_name,na}</DisplayString>
+    <Expand>
+      <Item Name="[name]">name,na</Item>
+      <Item Name="[tex_name]">tex_name,na</Item>
+      <Item Name="[num_verts]">num_verts</Item>
+      <Item Name="[num_indices]">num_indices</Item>
+      <ArrayItems>
+        <Size>num_verts</Size>
+        <ValuePointer>(vertex_t*)((char*)this + off_verts)</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  
+  <!-- ///////////////////////////////////////////////////////////////////// -->
+  
+  <Type Name="ResManager">
+    <DisplayString>id={name,na} count={count} sizeOf={sizeOf} max={maxCount}</DisplayString>
+    <Expand>
+      <Item Name="[name]">name,na</Item>
+      <Item Name="load()">load,na</Item>
+      <Item Name="free()">free,na</Item>
+      <Item Name="[sizeof]">sizeOf</Item>
+      <Item Name="[maxcnt]">maxCount</Item>
+      <Item Name="[count]">count</Item>
+      <IndexListItems>
+        <Size>maxCount</Size>
+        <ValueNode>*(Resource*)((char*)this + sizeof(*this) + sizeOf * $i)</ValueNode>
+      </IndexListItems>
+    </Expand>
+  </Type>
+  <Type Name="TexManager">
+    <DisplayString>id={rm.name,na} count={rm.count} sizeOf={rm.sizeOf} max={rm.maxCount}</DisplayString>
+    <Expand>
+      <Item Name="[name]">rm.name,na</Item>
+      <Item Name="load()">rm.load,na</Item>
+      <Item Name="free()">rm.free,na</Item>
+      <Item Name="[sizeof]">rm.sizeOf</Item>
+      <Item Name="[maxcnt]">rm.maxCount</Item>
+      <Item Name="[count]">rm.count</Item>
+      <ArrayItems>
+        <Size>rm.maxCount</Size>
+        <ValuePointer>(Texture*)((char*)this + sizeof(*this))</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="MeshManager">
+    <DisplayString>id={rm.name,na} count={rm.count} sizeOf={rm.sizeOf} max={rm.maxCount}</DisplayString>
+    <Expand>
+      <Item Name="[name]">rm.name,na</Item>
+      <Item Name="load()">rm.load,na</Item>
+      <Item Name="free()">rm.free,na</Item>
+      <Item Name="[sizeof]">rm.sizeOf</Item>
+      <Item Name="[maxcnt]">rm.maxCount</Item>
+      <Item Name="[count]">rm.count</Item>
+      <ArrayItems>
+        <Size>rm.maxCount</Size>
+        <ValuePointer>(StaticMesh*)((char*)this + sizeof(*this))</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="ShaderManager">
+    <DisplayString>id={rm.name,na} count={rm.count} sizeOf={rm.sizeOf} max={rm.maxCount}</DisplayString>
+    <Expand>
+      <Item Name="[name]">rm.name,na</Item>
+      <Item Name="load()">rm.load,na</Item>
+      <Item Name="free()">rm.free,na</Item>
+      <Item Name="[sizeof]">rm.sizeOf</Item>
+      <Item Name="[maxcnt]">rm.maxCount</Item>
+      <Item Name="[count]">rm.count</Item>
+      <ArrayItems>
+        <Size>rm.maxCount</Size>
+        <ValuePointer>(Shader*)((char*)this + sizeof(*this))</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  
+</AutoVisualizer>

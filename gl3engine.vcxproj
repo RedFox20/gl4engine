@@ -40,7 +40,10 @@
     <ClCompile Include="src\vertex_array.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\shaders\simple.frag" />
+    <None Include="data\shaders\simple.frag">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </None>
     <None Include="data\shaders\simple.vert" />
     <None Include="data\shaders\v3f-t2f-c4f.frag" />
     <None Include="data\shaders\v3f-t2f-c4f.vert" />
@@ -79,7 +82,7 @@
     <NMakeOutput>gl3engine.exe</NMakeOutput>
     <NMakeCleanCommandLine>make clean</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>make clean &amp;&amp; make debug</NMakeReBuildCommandLine>
-    <NMakePreprocessorDefinitions>WIN32;_WIN32;DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakePreprocessorDefinitions>WIN32;_WIN32;DEBUG;GLEW_STATIC;FREEGLUT_STATIC;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>./;./src;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <OutDir>./</OutDir>
     <IntDir>obj</IntDir>
@@ -90,7 +93,7 @@
     <NMakeOutput>gl3engine.exe</NMakeOutput>
     <NMakeCleanCommandLine>make clean</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>make clean &amp;&amp; make release</NMakeReBuildCommandLine>
-    <NMakePreprocessorDefinitions>WIN32;_WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakePreprocessorDefinitions>WIN32;_WIN32;NDEBUG;GLEW_STATIC;FREEGLUT_STATIC;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>./;./src;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <OutDir>./</OutDir>
     <IntDir>obj</IntDir>
