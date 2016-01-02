@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\actor.c">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\main.c">
       <Filter>src</Filter>
     </ClCompile>
@@ -25,23 +22,23 @@
     <ClCompile Include="src\shader.c">
       <Filter>src\framework</Filter>
     </ClCompile>
-    <ClCompile Include="src\utf8.c">
-      <Filter>src\util</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util.c">
-      <Filter>src\util</Filter>
-    </ClCompile>
     <ClCompile Include="src\vertex_array.c">
       <Filter>src\framework</Filter>
     </ClCompile>
     <ClCompile Include="src\types3d.c">
       <Filter>src\framework</Filter>
     </ClCompile>
+    <ClCompile Include="src\actor.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utf8.c">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util.c">
+      <Filter>src\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\actor.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\main.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -66,17 +63,20 @@
     <ClInclude Include="src\shader.h">
       <Filter>src\framework</Filter>
     </ClInclude>
-    <ClInclude Include="src\util.h">
-      <Filter>src\util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utf8.h">
-      <Filter>src\util</Filter>
-    </ClInclude>
     <ClInclude Include="src\vertex_array.h">
       <Filter>src\framework</Filter>
     </ClInclude>
     <ClInclude Include="src\types3d.h">
       <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\actor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utf8.h">
+      <Filter>src\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -114,7 +114,7 @@
       <UniqueIdentifier>{adecc997-2d18-467b-8582-a21cbb6fd741}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\util">
-      <UniqueIdentifier>{fb7a16cc-452d-423b-a711-8a7fe38a43fc}</UniqueIdentifier>
+      <UniqueIdentifier>{526097eb-7ede-4aef-a1dc-44b6089ef4e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

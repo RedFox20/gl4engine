@@ -6,7 +6,7 @@
 #include "shader.h"
 
 
-typedef struct Scene
+typedef struct World
 {
 	int width, height; // current framebuffer width/height
 	double deltaTime;  // deltaTime since last frame
@@ -21,16 +21,16 @@ typedef struct Scene
 	int numActors;
 	Actor actors[64];
 
-} Scene;
+} World;
 
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void scene_frame(Scene* s, double deltaTime)
+void world_tick(World* s, double deltaTime)
 {
 	static vec3 UP = { 0.0f, 1.0f, 0.0f }; // OpenGL: Y is up
 
-	mat4 proj = mat4_perspective(45.0f, s->width, s->height, 1.0f, 1000.0f);
+	mat4 proj = mat4_perspective(45.0f, (float)s->width, (float)s->height, 1.0f, 1000.0f);
 	mat4 view = mat4_lookat(s->camPos, s->camTarget, UP);
 	mat4_mul(&proj, &view); // proj(viewprojMatrix) = proj * view
 	{
@@ -38,7 +38,7 @@ void scene_frame(Scene* s, double deltaTime)
 
 	}
 
-	proj = mat4_ortho(0.0f, s->width, 0.0f, s->height);
+	proj = mat4_ortho(0.0f, (float)s->width, 0.0f, (float)s->height);
 	{
 		// render user interface (if any)
 
@@ -47,7 +47,7 @@ void scene_frame(Scene* s, double deltaTime)
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void scene_enter(Scene* s)
+void world_create(World* s)
 {
 	s->shaders  = shader_manager_create(16);
 	s->meshes   = mesh_manager_create(64);
@@ -65,7 +65,7 @@ void scene_enter(Scene* s)
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void scene_exit(Scene* s)
+void world_destroy(World* s)
 {
 	for (int i = 0; i < s->numActors; ++i)
 		actor_destroy(&s->actors[i]);
@@ -77,7 +77,7 @@ void scene_exit(Scene* s)
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void scene_loop(Scene* s, GLFWwindow* window)
+void main_loop(World* s, GLFWwindow* window)
 {
 	glfwSetWindowUserPointer(window, s);
 	while (!glfwWindowShouldClose(window))
@@ -88,7 +88,7 @@ void scene_loop(Scene* s, GLFWwindow* window)
 		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);  // clear background to soft black
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear background
 
-		scene_frame(s, s->deltaTime);
+		world_tick(s, s->deltaTime);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -99,7 +99,7 @@ void scene_loop(Scene* s, GLFWwindow* window)
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	Scene* s = glfwGetWindowUserPointer(window);
+	World* s = glfwGetWindowUserPointer(window);
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
 
@@ -108,15 +108,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 static void glfw_error(int err, const char* description)
 {
-	fprintf(stderr, "GLFW error %d: %s\n", err, description);
+	LOG("GLFW error %d: %s\n", err, description);
 }
 
 int main(int argc, char** argv)
 {
+	////////////// Init GLFW /////////////
 	glfwSetErrorCallback(&glfw_error);
-	if (!glewInit()) return EXIT_FAILURE;
-	if (!glfwInit()) return EXIT_FAILURE;
-
+	if (!glfwInit())
+		return EXIT_FAILURE;
 	GLFWwindow* window = glfwCreateWindow(1280, 720, "OpenGL 3.0 with GLFW", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
@@ -125,7 +125,15 @@ int main(int argc, char** argv)
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, &key_callback);
 
-	// enable basic OpenGL features
+	////////////// Init GLEW /////////////
+	glewExperimental = true; // enable loading experimental OpenGL features
+	GLenum status = glewInit();
+	if (status != GLEW_OK) { // init GL extension wrangler
+		LOG("GLEW error: %s\n", glewGetErrorString(status));
+		return EXIT_FAILURE;
+	}
+
+	////////////// init basic OpenGL //////////////
 	glEnable(GL_TEXTURE_2D); // enable 2d texturing for 3d models
 	glEnable(GL_DEPTH_TEST);  // enable depth testing
 	glEnable(GL_BLEND); 	  // enable alpha mapping
@@ -137,11 +145,11 @@ int main(int argc, char** argv)
 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST); 	
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); 
 
-	// setup our scene
-	Scene mainScene = { 0 };
-	scene_enter(&mainScene);
-	scene_loop(&mainScene, window);
-	scene_exit(&mainScene);
+	// enter world
+	World world = { 0 };
+	world_create(&world);
+	main_loop(&world, window);
+	world_destroy(&world);
 
 	glfwDestroyWindow(window);
 	glfwTerminate();

@@ -7,12 +7,12 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-static void texmgr_free(Texture* tex)
+static void _tex_free(Texture* tex)
 {
 	if (tex->glTexture) glDeleteTextures(1, &tex->glTexture);
 	if (tex->data)      free(tex->data);
 }
-static bool texmgr_load(Texture* tex, const char* fullPath)
+static bool _tex_load(Texture* tex, const char* fullPath)
 {
 	int width, height;
 	unsigned char* image = SOIL_load_image(fullPath, &width, &height, 0, SOIL_LOAD_RGBA);
@@ -36,7 +36,7 @@ static bool texmgr_load(Texture* tex, const char* fullPath)
 
 TexManager* tex_manager_create(int maxCount) {
 	return (TexManager*)res_manager_create(maxCount, sizeof(Texture), 
-		(ResMgr_LoadFunc)texmgr_load, (ResMgr_FreeFunc)texmgr_free);
+		(ResMgr_LoadFunc)_tex_load, (ResMgr_FreeFunc)_tex_free);
 }
 Texture* tex_manager_data(TexManager* t) {
 	return (Texture*)res_manager_data(&t->rm);

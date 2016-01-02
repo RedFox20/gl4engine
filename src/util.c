@@ -1,8 +1,4 @@
 #include "util.h"
-#include <stdlib.h>   // _fullpath
-#include <string.h>   // memcmp
-#include <sys/stat.h> // fstat
-#include <GL/glfw3.h> // glfwGetTime
 #ifdef _WIN32
 	#define WIN32_LEAN_AND_MEAN
 	#include <Windows.h>// Sleep
@@ -11,6 +7,11 @@
 	#include <sys/time.h>
 	#include <unistd.h> // usleep, getcwd
 #endif
+#include <stdlib.h>   // _fullpath
+#include <string.h>   // memcmp
+#include <sys/stat.h> // fstat
+#include <GL/glfw3.h> // glfwGetTime
+
 
 	void sleep_ms(int millis)
 	{
@@ -45,7 +46,7 @@
 		char cwd[512]; getcwd(cwd, 512);
 		char buf[512]; _fullpath(buf, relativePath, 512);
 		int clen = strlen(cwd);
-		char* src = memcmp(buf, cwd, clen) == 0 ? buf + clen : buf;
+		char* src = memcmp(buf, cwd, clen) == 0 ? buf + clen + 1 : buf;
 		return strncpy(dst, src, dstSize);
 	}
 

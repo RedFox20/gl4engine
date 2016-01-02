@@ -22,7 +22,7 @@ typedef enum ShaderUniform
 
 
 /** @brief shader attribute slots */
-typedef enum ShaderAttribute
+typedef enum ShaderAttr
 {
 	a_Position,      // attribute vec3 position;  position (vec2 XY or vec3 XYZ)
 	a_Normal,        // attribute vec3 normal;    normal 
@@ -31,7 +31,7 @@ typedef enum ShaderAttribute
 	a_Vertex,        // attribute vec4 vertex;    additional generic 4D vertex
 	a_Color,         // attribute vec4 color;     per-vertex coloring
 	a_MaxAttributes, // attribute counter
-} ShaderAttribute;
+} ShaderAttr;
 
 ////////////////////////////////////////////////////////////////////////////////
 

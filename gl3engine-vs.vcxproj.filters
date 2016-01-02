@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\framework">
+      <UniqueIdentifier>{8b748807-bb57-4890-838b-aaf81cf0e79b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util">
+      <UniqueIdentifier>{78f9176d-502e-4652-973a-23575d274a4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GL">
+      <UniqueIdentifier>{3c19d5f9-4a35-4511-9784-e085f69941ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOIL">
+      <UniqueIdentifier>{13f6f684-4d63-4711-a935-75a69440aa97}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\material.h">
+      <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mesh.h">
+      <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resource.h">
+      <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader.h">
+      <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vertex_array.h">
+      <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\types3d.h">
+      <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\SOIL\image_DXT.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\SOIL\image_helper.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\SOIL\SOIL.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\SOIL\stb_image_aug.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\SOIL\stbi_DDS_aug.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\SOIL\stbi_DDS_aug_c.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\glew.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\glfw3.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utf8.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\actor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\material.c">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mesh.c">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource.c">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.c">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vertex_array.c">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\types3d.c">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="GL\SOIL\image_DXT.c">
+      <Filter>SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="GL\SOIL\image_helper.c">
+      <Filter>SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="GL\SOIL\SOIL.c">
+      <Filter>SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="GL\SOIL\stb_image_aug.c">
+      <Filter>SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="GL\glew.c">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utf8.c">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util.c">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\actor.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

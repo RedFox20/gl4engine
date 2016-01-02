@@ -1,6 +1,6 @@
 SRCS   = $(wildcard src/*.c)
 OBJS   = $(SRCS:src/%.c=obj/%.o)
-CFLAGS = -DGLEW_STATIC -m32 -march=native -mfpmath=sse -std=gnu11 -I. -IGL/ -Wall -Wno-unused-result
+CFLAGS = -DGLEW_STATIC -m32 -march=native -mfpmath=sse -std=gnu11 -I. -IGL/ -Wall -Wno-unused-result -Wno-missing-braces
 ifeq ($(OS),Windows_NT)
  OUT    = gl3engine.exe
  FORMAT = win32
