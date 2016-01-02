@@ -105,7 +105,7 @@ static GLuint compileShaderFile(const char* shFile, time_t* modified, GLenum typ
 
 ////////////////////////////////////////////////////////////////////////////////
 
-Shader* shader_init(Shader* s, const char* shaderName)
+static Shader* shader_init_unmanaged(Shader* s, const char* shaderName)
 {
 	s->program = 0;
 	snprintf(s->vs_path, sizeof(s->vs_path), "%s.vert", shaderName);
@@ -117,9 +117,16 @@ Shader* shader_init(Shader* s, const char* shaderName)
 	return s;
 }
 
-void shader_free(Shader* s)
+static void shader_free_unmanaged(Shader* s)
 {
 	if (s->program) glDeleteProgram(s->program);
+}
+
+static bool shader_load_unmanaged(Shader* s, const char* shaderName)
+{
+	bool ok = shader_reload(shader_init_unmanaged(s, shaderName));
+	if (!ok) shader_free_unmanaged(s);
+	return ok;
 }
 
 static void shader_err(const Shader* s, const char* errfmt, ...)
@@ -158,13 +165,6 @@ bool shader_reload(Shader* s)
 	glDeleteShader(vs);
 	glDeleteShader(fs);
 	return status;
-}
-
-bool shader_load(Shader* s, const char* shaderName)
-{
-	bool ok = shader_reload(shader_init(s, shaderName));
-	if (!ok) shader_free(s);
-	return ok;
 }
 
 static time_t time_modified(const char* file) {
@@ -270,27 +270,27 @@ void shader_unbind_attributes(const Shader* s)
 
 
 // initializes a resource manager for ShaderManager Shader objects
-ShaderManager* shadermgr_init(int maxCount) {
-	return (ShaderManager*)resmgr_init(maxCount, sizeof(Shader), 
-		(ResMgr_LoadFunc)shader_load, (ResMgr_FreeFunc)shader_free);
+ShaderManager* shader_manager_create(int maxCount) {
+	return (ShaderManager*)res_manager_create(maxCount, sizeof(Shader), 
+		(ResMgr_LoadFunc)shader_load_unmanaged, (ResMgr_FreeFunc)shader_free_unmanaged);
 }
-Shader* shadermgr_data(ShaderManager* m) {
-	return (Shader*)resmgr_data(&m->rm);
+Shader* shader_manager_data(ShaderManager* m) {
+	return (Shader*)res_manager_data(&m->rm);
 }
-Shader* shadermgr_load_shader(ShaderManager* m, const char* shaderName) {
-	return (Shader*)resmgr_load_item(&m->rm, shaderName);
+Shader* shader_load(ShaderManager* m, const char* shaderName) {
+	return (Shader*)resource_load(&m->rm, shaderName);
 }
-void shadermgr_free_shader(Shader* s) {
-	resmgr_free_item(&s->res);
+void shader_free(Shader* s) {
+	resource_free(&s->res);
 }
-void shadermgr_clean_unused(ShaderManager* m) {
-	resmgr_clean_unused(&m->rm);
+void shader_manager_clean_unused(ShaderManager* m) {
+	res_manager_clean_unused(&m->rm);
 }
-void shadermgr_destroy_all_items(ShaderManager* m) {
-	resmgr_destroy_all_items(&m->rm);
+void shader_manager_destroy_all_items(ShaderManager* m) {
+	res_manager_destroy_all_items(&m->rm);
 }
-void shadermgr_destroy(ShaderManager* m) {
-	resmgr_destroy(&m->rm);
+void shader_manager_destroy(ShaderManager* m) {
+	res_manager_destroy(&m->rm);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

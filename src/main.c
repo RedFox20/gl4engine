@@ -14,9 +14,9 @@ typedef struct Scene
 	vec3 camPos;    // camera position
 	vec3 camTarget; // camera look target
 
-	ShaderManager* shaderMgr; // shader resource pool
-	MeshManager*   meshMgr;   // mesh resource pool
-	TexManager*    texMgr;    // texture resource pool
+	ShaderManager* shaders;  // shader resource pool
+	MeshManager*   meshes;   // mesh resource pool
+	TexManager*    textures; // texture resource pool
 
 	int numActors;
 	Actor actors[64];
@@ -49,17 +49,17 @@ void scene_frame(Scene* s, double deltaTime)
 
 void scene_enter(Scene* s)
 {
-	s->shaderMgr = shadermgr_init(16);
-	s->meshMgr   = meshmgr_init(64);
-	s->texMgr    = texmgr_init(64);
+	s->shaders  = shader_manager_create(16);
+	s->meshes   = mesh_manager_create(64);
+	s->textures = tex_manager_create(64);
 
 	Actor* a = &s->actors[s->numActors++];
 	actor_init(a);
-	if (actor_load_mesh(a, s->meshMgr, "statue_mage.bmd"))
+	if (actor_mesh(a, mesh_load(s->meshes, "statue_mage.bmd")))
 	{
-		Material m = material_from_file(s->shaderMgr, "shaders/simple", 
-			                            s->texMgr,    a->mesh->model->TexName);
-		actor_load_material(a, &m);
+		Material m = material_from_file(s->shaders, "shaders/simple", 
+			                            s->textures, a->mesh->model->TexName);
+		actor_material(a, &m);
 	}
 }
 
@@ -69,6 +69,10 @@ void scene_exit(Scene* s)
 {
 	for (int i = 0; i < s->numActors; ++i)
 		actor_destroy(&s->actors[i]);
+	s->numActors = 0;
+	tex_manager_destroy(s->textures);
+	mesh_manager_destroy(s->meshes);
+	shader_manager_destroy(s->shaders);
 }
 
 //////////////////////////////////////////////////////////////////////////////////

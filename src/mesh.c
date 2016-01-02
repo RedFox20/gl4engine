@@ -78,28 +78,27 @@ static bool meshmgr_load(StaticMesh* sm, const char* fullPath)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-MeshManager* meshmgr_init(int maxCount) {
-	return (MeshManager*)resmgr_init(maxCount, sizeof(StaticMesh), 
+StaticMesh* mesh_load(MeshManager* m, const char* modelPath) {
+	return (StaticMesh*)resource_load(&m->rm, modelPath);
+}
+void mesh_free(StaticMesh* mesh) {
+	resource_free(&mesh->res);
+}
+MeshManager* mesh_manager_create(int maxCount) {
+	return (MeshManager*)res_manager_create(maxCount, sizeof(StaticMesh), 
 		(ResMgr_LoadFunc)meshmgr_load, (ResMgr_FreeFunc)meshmgr_free);
 }
-StaticMesh* meshmgr_data(MeshManager* m) {
-	return (StaticMesh*)resmgr_data(&m->rm);
+void mesh_manager_destroy(MeshManager* m) {
+	res_manager_destroy(&m->rm);
 }
-StaticMesh* meshmgr_load_mesh(MeshManager* m, const char* modelPath) {
-	return (StaticMesh*)resmgr_load_item(&m->rm, modelPath);
+StaticMesh* mesh_manager_data(MeshManager* m) {
+	return (StaticMesh*)res_manager_data(&m->rm);
 }
-void meshmgr_free_mesh(StaticMesh* mesh) {
-	resmgr_free_item(&mesh->res);
+void mesh_manager_clean_unused(MeshManager* m) {
+	res_manager_clean_unused(&m->rm);
 }
-void meshmgr_clean_unused(MeshManager* m) {
-	resmgr_clean_unused(&m->rm);
-}
-void meshmgr_destroy_all_items(MeshManager* m) {
-	resmgr_destroy_all_items(&m->rm);
-}
-void meshmgr_destroy(MeshManager* m) {
-	resmgr_destroy(&m->rm);
+void mesh_manager_destroy_all_items(MeshManager* m) {
+	res_manager_destroy_all_items(&m->rm);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

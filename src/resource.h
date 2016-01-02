@@ -34,6 +34,17 @@ typedef struct ResManager
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * @brief Loads a resource, if it's already loaded, simply increments refcount
+ * @note  If resource does not exist, NULL is returned
+ * @param mgr Resourmanager context
+ * @param relativePath Relative path to resource file
+ */ 
+Resource* resource_load(ResManager* rm, const char* relativePath);
+
+/** @brief Decrements refcount, but does not free any resources! use resmgr_clean_unused() */
+void resource_free(Resource* res);
+
+/**
  * @brief Dynamically creates a new Resource Manager
  * @note (!) Items must extend struct Resource (!)
  * 
@@ -42,29 +53,17 @@ typedef struct ResManager
  * @param loadFunc Function to use when initializing a resource
  * @param freeFunc Function to use when destroying a resource
  */
-ResManager* resmgr_init(int maxCount, int sizeOf, ResMgr_LoadFunc loadFunc, ResMgr_FreeFunc freeFunc);
-
-/** @brief Returns pointer to the first resource element */
-Resource* resmgr_data(ResManager* rm);
-
-/**
- * @brief Loads a resource, if it's already loaded, simply increments refcount
- * @note  If resource does not exist, NULL is returned
- * @param mgr Resourmanager context
- * @param relativePath Relative path to resource file
- */ 
-Resource* resmgr_load_item(ResManager* rm, const char* relativePath);
-
-/** @brief Decrements refcount, but does not free any resources! use resmgr_clean_unused() */
-void resmgr_free_item(Resource* res);
-
-/** @brief Frees any unused (refcount == 0) resources */ 
-void resmgr_clean_unused(ResManager* rm);
-
-/** @brief Destroys all items, regardless of their refcounts */
-void resmgr_destroy_all_items(ResManager* rm);
+ResManager* res_manager_create(int maxCount, int sizeOf, ResMgr_LoadFunc loadFunc, ResMgr_FreeFunc freeFunc);
 
 /** @brief Destroys the resource manager and all its items*/
-void resmgr_destroy(ResManager* rm);
+void res_manager_destroy(ResManager* rm);
 
+/** @brief Returns pointer to the first resource element */
+Resource* res_manager_data(ResManager* rm);
+
+/** @brief Frees any unused (refcount == 0) resources */ 
+void res_manager_clean_unused(ResManager* rm);
+
+/** @brief Destroys all items, regardless of their refcounts */
+void res_manager_destroy_all_items(ResManager* rm);
 ////////////////////////////////////////////////////////////////////////////////

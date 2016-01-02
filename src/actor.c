@@ -1,9 +1,5 @@
 #include "actor.h"
-#include <GL/glew.h>
 #include <string.h>
-#include "util.h"
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -19,24 +15,23 @@ void actor_destroy(Actor* a)
 }
 void actor_clear_mesh(Actor * a)
 {
-	if (a->mesh) meshmgr_free_mesh(a->mesh);
+	if (a->mesh) mesh_free(a->mesh);
 }
 void actor_clear_material(Actor* a)
 {
 	if (a->material.texture) material_destroy(&a->material);
 }
 
-bool actor_load_mesh(Actor* a, MeshManager* mgr, const char* modelPath)
+bool actor_mesh(Actor* a, StaticMesh* mesh)
 {
 	actor_clear_mesh(a);
-	a->mesh = meshmgr_load_mesh(mgr, modelPath);
-	return a->mesh != NULL;
+	return (a->mesh = mesh) != NULL;
 }
 
-bool actor_load_material(Actor* a, Material* mat)
+bool actor_material(Actor* a, Material* mat)
 {
 	actor_clear_material(a);
-	material_move(&a->material, mat);
+	if (mat) material_move(&a->material, mat);
 	return a->material.shader && a->material.texture;
 }
 

@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <sys/stat.h> // stat, fstat, time_t
 #include "types3d.h"
-#include "resmgr.h"
+#include "resource.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -52,12 +52,30 @@ typedef struct Shader
 
 } Shader;
 
+typedef struct ShaderManager 
+{
+	ResManager rm;
+} ShaderManager;
 
-/** Initializes a shader, but doesn't load anything */
-Shader* shader_init(Shader* s, const char* shaderName);
+////////////////////////////////////////////////////////////////////////////////
+// Implements ResManager Resource interface
 
-/** Destroys a compiled shader set  */
+// loads a shader, if it's already loaded, simply increments refcount
+Shader* shader_load(ShaderManager* m, const char* shaderName);
+// decrements refcount, but does not free any resources! use meshmgr_clean_unused()
 void shader_free(Shader* s);
+// initializes a resource manager for ShaderManager Shader objects
+ShaderManager* shader_manager_create(int maxCount);
+// destroys the resource manager and all its items
+void shader_manager_destroy(ShaderManager* m);
+// returns pointer to the first resource element
+Shader* shader_manager_data(ShaderManager* m);
+// frees any unused (refcount == 0) resources
+void shader_manager_clean_unused(ShaderManager* m);
+// destroys all items, regardless of their refcounts
+void shader_manager_destroy_all_items(ShaderManager* m);
+
+////////////////////////////////////////////////////////////////////////////////
 
 /** 
  * Forces the shader to reload itself. This can also be called after shader_init 
@@ -65,9 +83,6 @@ void shader_free(Shader* s);
  * @return TRUE if shader reload succeeded.
  */
 bool shader_reload(Shader* s);
-
-/** Loads and compiles this shader set */
-bool shader_load(Shader* s, const char* shaderName);
 
 /**
  * Checks vertex/fragment shader sources and does a shader_reload() if necessary.
@@ -116,30 +131,5 @@ void shader_bind_attributes(const Shader* s);
 
 /** @brief Unbinds all the active attributes in the shader (required for state coherency!) */
 void shader_unbind_attributes(const Shader* s);
-
-////////////////////////////////////////////////////////////////////////////////
-
-typedef struct ShaderManager 
-{
-	ResManager rm;
-} ShaderManager;
-
-////////////////////////////////////////////////////////////////////////////////
-// Implements ResManager Resource interface
-
-// initializes a resource manager for ShaderManager Shader objects
-ShaderManager* shadermgr_init(int maxCount);
-// returns pointer to the first resource element
-Shader* shadermgr_data(ShaderManager* m);
-// loads a shader, if it's already loaded, simply increments refcount
-Shader* shadermgr_load_shader(ShaderManager* m, const char* shaderName);
-// decrements refcount, but does not free any resources! use meshmgr_clean_unused()
-void shadermgr_free_shader(Shader* s);
-// frees any unused (refcount == 0) resources
-void shadermgr_clean_unused(ShaderManager* m);
-// destroys all items, regardless of their refcounts
-void shadermgr_destroy_all_items(ShaderManager* m);
-// destroys the resource manager and all its items
-void shadermgr_destroy(ShaderManager* m);
 
 ////////////////////////////////////////////////////////////////////////////////

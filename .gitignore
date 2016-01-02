@@ -1,2 +1,7 @@
 /.vs/gl3engine/v14/*.suo
 /gl3engine.vcxproj.user
+/obj
+/*.opendb
+/gl3engine.exe
+/gl3engine.log
+/gl3engine.sdf

@@ -1,7 +1,7 @@
 #pragma once
 #include <stdbool.h>
 #include "vertex_array.h"
-#include "resmgr.h"
+#include "resource.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -40,19 +40,19 @@ typedef struct MeshManager
 ////////////////////////////////////////////////////////////////////////////////
 // Implements ResManager Resource interface
 
-// initializes a resource manager for MeshManager objects
-MeshManager* meshmgr_init(int maxCount);
-// returns pointer to the first resource element
-StaticMesh* meshmgr_data(MeshManager* m);
 // loads a static mesh, if it's already loaded, simply increments refcount
-StaticMesh* meshmgr_load_mesh(MeshManager* m, const char* modelPath);
+StaticMesh* mesh_load(MeshManager* m, const char* modelPath);
 // decrements refcount, but does not free any resources! use meshmgr_clean_unused()
-void meshmgr_free_mesh(StaticMesh* mesh);
-// frees any unused (refcount == 0) resources
-void meshmgr_clean_unused(MeshManager* m);
-// destroys all meshes, regardless of their refcounts
-void meshmgr_destroy_all_items(MeshManager* m);
+void mesh_free(StaticMesh* mesh);
+// initializes a resource manager for MeshManager objects
+MeshManager* mesh_manager_create(int maxCount);
 // destroys the resource manager and all its items
-void meshmgr_destroy(MeshManager* m);
+void mesh_manager_destroy(MeshManager* m);
+// returns pointer to the first resource element
+StaticMesh* mesh_manager_data(MeshManager* m);
+// frees any unused (refcount == 0) resources
+void mesh_manager_clean_unused(MeshManager* m);
+// destroys all meshes, regardless of their refcounts
+void mesh_manager_destroy_all_items(MeshManager* m);
 
 ////////////////////////////////////////////////////////////////////////////////

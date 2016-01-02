@@ -7,35 +7,35 @@
     <ClCompile Include="src\main.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\types3d.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utf8.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader.c">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="GL\glew.c">
       <Filter>GL</Filter>
     </ClCompile>
     <ClCompile Include="GL\SOIL\SOIL.c">
       <Filter>SOIL</Filter>
     </ClCompile>
-    <ClCompile Include="src\vertex_array.c">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\material.c">
-      <Filter>src</Filter>
+      <Filter>src\framework</Filter>
     </ClCompile>
     <ClCompile Include="src\mesh.c">
-      <Filter>src</Filter>
+      <Filter>src\framework</Filter>
     </ClCompile>
-    <ClCompile Include="src\resmgr.c">
-      <Filter>src</Filter>
+    <ClCompile Include="src\resource.c">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.c">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utf8.c">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util.c">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vertex_array.c">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\types3d.c">
+      <Filter>src\framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -43,18 +43,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\main.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\types3d.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utf8.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="GL\glew.h">
@@ -66,17 +54,29 @@
     <ClInclude Include="GL\SOIL\SOIL.h">
       <Filter>SOIL</Filter>
     </ClInclude>
-    <ClInclude Include="src\vertex_array.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\material.h">
-      <Filter>src</Filter>
+      <Filter>src\framework</Filter>
     </ClInclude>
     <ClInclude Include="src\mesh.h">
-      <Filter>src</Filter>
+      <Filter>src\framework</Filter>
     </ClInclude>
-    <ClInclude Include="src\resmgr.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\resource.h">
+      <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader.h">
+      <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utf8.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vertex_array.h">
+      <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\types3d.h">
+      <Filter>src\framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +109,12 @@
     </Filter>
     <Filter Include="data\shaders">
       <UniqueIdentifier>{f045ba73-924c-4005-99b6-3b1ef90ef414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\framework">
+      <UniqueIdentifier>{adecc997-2d18-467b-8582-a21cbb6fd741}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util">
+      <UniqueIdentifier>{fb7a16cc-452d-423b-a711-8a7fe38a43fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -34,27 +34,27 @@ static bool texmgr_load(Texture* tex, const char* fullPath)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TexManager* texmgr_init(int maxCount) {
-	return (TexManager*)resmgr_init(maxCount, sizeof(Texture), 
+TexManager* tex_manager_create(int maxCount) {
+	return (TexManager*)res_manager_create(maxCount, sizeof(Texture), 
 		(ResMgr_LoadFunc)texmgr_load, (ResMgr_FreeFunc)texmgr_free);
 }
-Texture* texmgr_data(TexManager* t) {
-	return (Texture*)resmgr_data(&t->rm);
+Texture* tex_manager_data(TexManager* t) {
+	return (Texture*)res_manager_data(&t->rm);
 }
-Texture* texmgr_load_tex(TexManager* t, const char* texturePath) {
-	return (Texture*)resmgr_load_item(&t->rm, texturePath);
+Texture* texture_load(TexManager* t, const char* texturePath) {
+	return (Texture*)resource_load(&t->rm, texturePath);
 }
-void texmgr_free_tex(Texture* tex) {
-	resmgr_free_item(&tex->res);
+void texture_free(Texture* tex) {
+	resource_free(&tex->res);
 }
-void texmgr_clean_unused(TexManager* t) {
-	resmgr_clean_unused(&t->rm);
+void tex_manager_clean_unused(TexManager* t) {
+	res_manager_clean_unused(&t->rm);
 }
-void texmgr_destroy_all_items(TexManager* t) {
-	resmgr_destroy_all_items(&t->rm);
+void tex_manager_destroy_all_items(TexManager* t) {
+	res_manager_destroy_all_items(&t->rm);
 }
-void texmgr_destroy(TexManager* t) {
-	resmgr_destroy(&t->rm);
+void tex_manager_destroy(TexManager* t) {
+	res_manager_destroy(&t->rm);
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -73,15 +73,15 @@ Material material_from_file(ShaderManager* smgr, const char* shaderName,
 {
 	Material m;
 	m.color   = WHITE;
-	m.shader  = shadermgr_load_shader(smgr, shaderName);
-	m.texture = texmgr_load_tex(tmgr, texturePath);
+	m.shader  = shader_load(smgr, shaderName);
+	m.texture = texture_load(tmgr, texturePath);
 	return m;
 }
 
 void material_destroy(Material* m)
 {
-	if (m->shader)  shadermgr_free_shader(m->shader), m->shader  = NULL;
-	if (m->texture) texmgr_free_tex(m->texture),      m->texture = NULL;
+	if (m->shader)  shader_free(m->shader), m->shader  = NULL;
+	if (m->texture) texture_free(m->texture),      m->texture = NULL;
 }
 
 void material_move(Material* dst, Material* src)

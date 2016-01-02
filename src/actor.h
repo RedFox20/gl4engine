@@ -28,10 +28,10 @@ void actor_clear_mesh(Actor* a);
 // safely removes reference to material
 void actor_clear_material(Actor* a);
 
-// loads a new mesh using the specified MeshManager
-bool actor_load_mesh(Actor* a, MeshManager* mgr, const char* modelPath);
+// takes ownership of the provides mesh
+bool actor_mesh(Actor* a, StaticMesh* mesh);
 // takes ownership of the provided material
-bool actor_load_material(Actor* a, Material* mat);
+bool actor_material(Actor* a, Material* mat);
 
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -1,4 +1,4 @@
-#include "resmgr.h"
+#include "resource.h"
 #include "util.h"
 #include <string.h>
 #include <assert.h>
@@ -25,7 +25,7 @@ static int init_hash(uint64_t* outHash, const char* string)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-ResManager* resmgr_init(int maxCount, int sizeOf, ResMgr_LoadFunc loadFunc, ResMgr_FreeFunc freeFunc)
+ResManager* res_manager_create(int maxCount, int sizeOf, ResMgr_LoadFunc loadFunc, ResMgr_FreeFunc freeFunc)
 {
 	assert(sizeOf > sizeof(Resource) && 
 		"resmgr_init(): sizeOf not larger than sizeof(Resource)! "
@@ -47,7 +47,13 @@ ResManager* resmgr_init(int maxCount, int sizeOf, ResMgr_LoadFunc loadFunc, ResM
 	return rm;
 }
 
-Resource* resmgr_data(ResManager* rm)
+void res_manager_destroy(ResManager* rm)
+{
+	res_manager_destroy_all_items(rm);
+	free(rm);
+}
+
+Resource* res_manager_data(ResManager* rm)
 {
 	return (Resource*)((char*)rm + sizeof(ResManager));
 }
@@ -64,7 +70,7 @@ Resource* resmgr_data(ResManager* rm)
 
 // TODO: make resource management thread safe (atomic refcounts)
 // TODO: implement a proper hashtable
-Resource* resmgr_load_item(ResManager* rm, const char* relativePath)
+Resource* resource_load(ResManager* rm, const char* relativePath)
 {
 	char path[260];
 	uint64_t hash, fphash;
@@ -108,7 +114,7 @@ Resource* resmgr_load_item(ResManager* rm, const char* relativePath)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void resmgr_free_item(Resource* item)
+void resource_free(Resource* item)
 {
 	ResManager* rm = item->mgr;
 	resmgr_iterator(res, item->mgr) {
@@ -135,7 +141,7 @@ static void resmgr_destroy_item(ResManager* rm, Resource* res)
 	--rm->count;
 }
 
-void resmgr_clean_unused(ResManager* rm)
+void res_manager_clean_unused(ResManager* rm)
 {
 	resmgr_iterator(res, rm) {
 		if (res->hlen && res->refcount <= 0)
@@ -143,16 +149,10 @@ void resmgr_clean_unused(ResManager* rm)
 	}
 }
 
-void resmgr_destroy_all_items(ResManager* rm)
+void res_manager_destroy_all_items(ResManager* rm)
 {
 	resmgr_iterator(res, rm) {
 		if (res->hlen) 
 			resmgr_destroy_item(rm, res);
 	}
-}
-
-void resmgr_destroy(ResManager* rm)
-{
-	resmgr_destroy_all_items(rm);
-	free(rm);
 }
