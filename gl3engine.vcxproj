@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GL\glew.h" />
+    <ClInclude Include="GL\glfw3.h" />
+    <ClInclude Include="GL\SOIL\SOIL.h" />
+    <ClInclude Include="src\actor.h" />
+    <ClInclude Include="src\material.h" />
+    <ClInclude Include="src\main.h" />
+    <ClInclude Include="src\mesh.h" />
+    <ClInclude Include="src\resmgr.h" />
+    <ClInclude Include="src\shader.h" />
+    <ClInclude Include="src\types3d.h" />
+    <ClInclude Include="src\utf8.h" />
+    <ClInclude Include="src\util.h" />
+    <ClInclude Include="src\vertex_array.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GL\glew.c" />
+    <ClCompile Include="GL\SOIL\SOIL.c" />
+    <ClCompile Include="src\actor.c" />
+    <ClCompile Include="src\material.c" />
+    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\mesh.c" />
+    <ClCompile Include="src\resmgr.c" />
+    <ClCompile Include="src\shader.c" />
+    <ClCompile Include="src\types3d.c" />
+    <ClCompile Include="src\utf8.c" />
+    <ClCompile Include="src\util.c" />
+    <ClCompile Include="src\vertex_array.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\shaders\simple.frag" />
+    <None Include="data\shaders\simple.vert" />
+    <None Include="data\shaders\v3f-t2f-c4f.frag" />
+    <None Include="data\shaders\v3f-t2f-c4f.vert" />
+    <None Include="Makefile" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{434B8059-26AC-452F-8AC5-B27829773444}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+    <ProjectName>gl3engine</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeBuildCommandLine>make debug</NMakeBuildCommandLine>
+    <NMakeOutput>gl3engine.exe</NMakeOutput>
+    <NMakeCleanCommandLine>make clean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>make clean &amp;&amp; make debug</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;_WIN32;DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>./;./src;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <OutDir>./</OutDir>
+    <IntDir>obj</IntDir>
+    <IncludePath>./;./src;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeBuildCommandLine>make release</NMakeBuildCommandLine>
+    <NMakeOutput>gl3engine.exe</NMakeOutput>
+    <NMakeCleanCommandLine>make clean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>make clean &amp;&amp; make release</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;_WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>./;./src;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <OutDir>./</OutDir>
+    <IntDir>obj</IntDir>
+    <IncludePath>./;./src;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <BuildLog>
+      <Path>./$(ProjectName).log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <BuildLog>
+      <Path>./$(ProjectName).log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
