@@ -33,6 +33,8 @@ void world_tick(World* w, double deltaTime)
 	mat4 proj = mat4_perspective(45.0f, w->width, w->height, 1.0f, 1000.0f);
 	mat4 view = mat4_lookat(w->camPos, w->camTarget, UP);
 	mat4_mul(&proj, &view); // proj(viewprojMatrix) = proj * view
+
+	mat4_identity(&view);
 	{
 		// render 3d scene
 		for (int i = 0; i < w->numActors; ++i)
