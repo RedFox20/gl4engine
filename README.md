@@ -1,2 +1,2 @@
-# gl3engine
-OpenGL 3.2 Engine written entirely in portable C
+# gl4engine
+OpenGL 4.3 Engine written entirely in portable C
