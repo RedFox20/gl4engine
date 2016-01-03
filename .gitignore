@@ -11,3 +11,9 @@
 /gl3engine-vs.pdb
 /gl3engine-vs.vcxproj.user
 *.user
+/gl4engine-vs.exe
+/gl4engine-vs.ilk
+/gl4engine-vs.pdb
+/gl4engine.exe
+/gl4engine.log
+/gl4engine.sdf

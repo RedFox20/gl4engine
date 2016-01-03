@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl3engine", "gl3engine.vcxproj", "{434B8059-26AC-452F-8AC5-B27829773444}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl4engine", "gl4engine.vcxproj", "{434B8059-26AC-452F-8AC5-B27829773444}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl3engine-vs", "gl3engine-vs.vcxproj", "{232AB7FA-9F8A-4B0A-B805-4992C54FD043}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl4engine-vs", "gl4engine-vs.vcxproj", "{232AB7FA-9F8A-4B0A-B805-4992C54FD043}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
