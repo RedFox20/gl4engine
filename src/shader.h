@@ -35,6 +35,7 @@ typedef enum ShaderAttr
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// managed by ResManager and refcounted
 typedef struct Shader
 {
 	Resource res;
@@ -52,28 +53,13 @@ typedef struct Shader
 
 } Shader;
 
-typedef struct ShaderManager 
+typedef struct ShaderManager
 {
 	ResManager rm;
 } ShaderManager;
 
-////////////////////////////////////////////////////////////////////////////////
-// Implements ResManager Resource interface
-
-// loads a shader, if it's already loaded, simply increments refcount
-Shader* shader_load(ShaderManager* m, const char* shaderName);
-// decrements refcount, but does not free any resources! use meshmgr_clean_unused()
-void shader_free(Shader* s);
-// initializes a resource manager for ShaderManager Shader objects
+// initializes a resource manager for Shader objects
 ShaderManager* shader_manager_create(int maxCount);
-// destroys the resource manager and all its items
-void shader_manager_destroy(ShaderManager* m);
-// returns pointer to the first resource element
-Shader* shader_manager_data(ShaderManager* m);
-// frees any unused (refcount == 0) resources
-void shader_manager_clean_unused(ShaderManager* m);
-// destroys all items, regardless of their refcounts
-void shader_manager_destroy_all_items(ShaderManager* m);
 
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -8,6 +8,8 @@
 
 typedef struct Actor // definition of a 3D actor in our scenes
 {
+	char name[32]; // unique actor name
+
 	vec3 pos; // XYZ position
 	vec3 rot; // euler XYZ rotation
 	vec3 scale; // XYZ scale
@@ -19,10 +21,15 @@ typedef struct Actor // definition of a 3D actor in our scenes
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// default initializes an actor
-void actor_init(Actor* a);
-// destroy an actor frees model and texture data
-void actor_destroy(Actor* a);
+// creates a new default initialized actor with the given name
+Actor* actor_create(const char* name);
+// destroys an allocated actor
+void actor_destroy(Actor*);
+
+// default initializes an actor with the given name
+void actor_init(Actor* a, const char* name);
+// clears frees model and texture data
+void actor_clear(Actor* a);
 // safely removes reference to mesh
 void actor_clear_mesh(Actor* a);
 // safely removes reference to material
@@ -34,6 +41,9 @@ bool actor_mesh(Actor* a, StaticMesh* mesh);
 bool actor_material(Actor* a, Material* mat);
 
 ////////////////////////////////////////////////////////////////////////////////
+
+// gets the affine transformation matrix of this actor
+mat4 actor_affine_matrix(const Actor* a);
 
 // draws this model in the specified viewprojection
 // and in the context of an already bound shader

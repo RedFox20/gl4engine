@@ -19,12 +19,12 @@ typedef struct vertex_descr
 // vertex buffer object (uses VAO)
 typedef struct vertex_array
 {
-	unsigned vao;          // vertex array object
-	unsigned vbuf;          // vertex buffer object
-	unsigned ibuf;          // element buffer object (if exists)
-	unsigned num_verts;    // number of vertices
-	unsigned num_indices;  // num element buffer indices (if ebo exists)
-	vertex_descr vd; // vertex layout descriptor
+	unsigned arrayObj;     // vertex array object
+	unsigned vertexBuf;    // vertex buffer object
+	unsigned indexBuf;     // element buffer object (if exists)
+	unsigned vertexCount;  // number of vertices
+	unsigned indexCount;   // num element buffer indices (if ebo exists)
+	vertex_descr descr;    // vertex layout descriptor
 } vertex_array;
 
 

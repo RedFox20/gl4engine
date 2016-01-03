@@ -2,9 +2,9 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#define retvec2(x,y)     vec2 r = {x,y};     return r
-#define retvec3(x,y,z)   vec3 r = {x,y,z};   return r
-#define retvec4(x,y,z,w) vec4 r = {x,y,z,w}; return r
+#define retvec2(x,y)     vec2 _r = {x,y};     return _r
+#define retvec3(x,y,z)   vec3 _r = {x,y,z};   return _r
+#define retvec4(x,y,z,w) vec4 _r = {x,y,z,w}; return _r
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -58,6 +58,38 @@ vec4 vec4_addf(vec4 a, float v) { retvec4(a.x+v, a.y+v, a.z+v, a.w+v); }
 vec4 vec4_subf(vec4 a, float v) { retvec4(a.x-v, a.y-v, a.z-v, a.w-v); }
 vec4 vec4_mulf(vec4 a, float v) { retvec4(a.x*v, a.y*v, a.z*v, a.w*v); }
 vec4 vec4_divf(vec4 a, float v) { retvec4(a.x/v, a.y/v, a.z/v, a.w/v); }
+
+////////////////////////////////////////////////////////////////////////////////
+
+vec4 quat_angle_axis(float angle, vec3 axis)
+{
+	const float r = radf(angle) * 0.5f;
+	const float s = sinf(r);
+	retvec4(axis.x * s, axis.y * s, axis.z * s, cosf(r));
+}
+
+vec4 quat_angle_axisf(float angle, float x, float y, float z)
+{
+	vec3 axis = {x,y,z};
+	return quat_angle_axis(angle, axis);
+}
+
+vec4 quat_from_rotation(vec3 rotation)
+{
+	vec4 q = quat_angle_axisf(rotation.x, 1.0f, 0.0f, 0.0f);
+	     q = quat_mul(quat_angle_axisf(rotation.y, 0.0f, 1.0f, 0.0f), q);
+	return   quat_mul(quat_angle_axisf(rotation.z, 0.0f, 0.0f, 1.0f), q);
+}
+
+vec4 quat_mul(vec4 q, vec4 p)
+{
+	retvec4(
+		q.w*p.w - q.x*p.x - q.y*p.y - q.z*p.z,
+		q.w*p.x + q.x*p.w + q.y*p.z - q.z*p.y,
+		q.w*p.y + q.y*p.w + q.z*p.x - q.x*p.z,
+		q.w*p.z + q.z*p.w + q.x*p.y - q.y*p.x
+	);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -165,12 +197,17 @@ mat4* mat4_rotate(mat4* m, float angleDegs, vec3 rotationAxis)
 	m->r2 = _mat4_rotrow(m, r2);
 	return m;
 }
+mat4* mat4_rotatef(mat4* m, float angleDegs, float x, float y, float z)
+{
+	vec3 axis = {x,y,z};
+	return mat4_rotate(m, angleDegs, axis);
+}
 
 mat4* mat4_scale(mat4* m, vec3 scale)
 {
-	m->r0 = vec4_mulf(m->r0, scale.x);
-	m->r1 = vec4_mulf(m->r1, scale.y);
-	m->r2 = vec4_mulf(m->r2, scale.z);
+	m->m00 *= scale.x;
+	m->m11 *= scale.y;
+	m->m22 *= scale.z;
 	return m;
 }
 
@@ -214,4 +251,29 @@ mat4 mat4_lookat(vec3 eye, vec3 center, vec3 up) // create a lookat mat4
 		-vec3_dot(s,eye), -vec3_dot(u,eye), vec3_dot(f,eye), 1.0f,
 	}}};
 	return r;
+}
+
+mat4 mat4_from_rotation(vec3 rotation)
+{
+	vec4 q = quat_from_rotation(rotation);
+	mat4 m = IDENTITY;
+	m.m00 = 1 - 2 * q.y * q.y - 2 * q.z * q.z;
+	m.m01 = 2 * q.x * q.y + 2 * q.w * q.z;
+	m.m02 = 2 * q.x * q.z - 2 * q.w * q.y;
+	m.m10 = 2 * q.x * q.y - 2 * q.w * q.z;
+	m.m11 = 1 - 2 * q.x * q.x - 2 * q.z * q.z;
+	m.m12 = 2 * q.y * q.z + 2 * q.w * q.x;
+	m.m20 = 2 * q.x * q.z + 2 * q.w * q.y;
+	m.m21 = 2 * q.y * q.z - 2 * q.w * q.x;
+	m.m22 = 1 - 2 * q.x * q.x - 2 * q.y * q.y;
+	return m;
+}
+
+mat4 mat4_from_scale(vec3 scale)
+{
+	mat4 m = IDENTITY;
+	m.m00 *= scale.x;
+	m.m11 *= scale.y;
+	m.m22 *= scale.z;
+	return m;
 }

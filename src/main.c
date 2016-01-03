@@ -2,46 +2,27 @@
 #include <GL/glfw3.h>
 #include "main.h"
 #include "util.h"
-#include "actor.h"
-#include "shader.h"
-
-
-typedef struct World
-{
-	float width, height; // current framebuffer width/height
-	double deltaTime;    // deltaTime since last frame
-
-	vec3 camPos;    // camera position
-	vec3 camTarget; // camera look target
-
-	ShaderManager* shaders;  // shader resource pool
-	MeshManager*   meshes;   // mesh resource pool
-	TexManager*    textures; // texture resource pool
-
-	int numActors;
-	Actor actors[64];
-
-} World;
-
+#include "world.h"
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void world_tick(World* w, double deltaTime)
-{
-	static vec3 UP = { 0.0f, 1.0f, 0.0f }; // OpenGL: Y is up
+static vec3 UP = { 0.0f, 1.0f, 0.0f }; // OpenGL: Y is up
 
+static void frame_tick(World* w, double deltaTime)
+{
+	Camera* c = w->camera;
 	mat4 proj = mat4_perspective(45.0f, w->width, w->height, 0.1f, 10000.0f);
-	mat4 look = mat4_lookat(w->camPos, w->camTarget, UP);
+	mat4 look = mat4_lookat(w->camera->a.pos, w->camera->target, UP);
 	mat4_mul(&proj, &look); // viewprojMatrix = proj * view
 
 	//mat4 view = proj;
 	//mat4_identity(&view);
 	{
 		// render 3d scene
-		for (int i = 0; i < w->numActors; ++i)
+		for (int i = 0; i < w->actors.size; ++i)
 		{
-			Actor* a = &w->actors[i];
-			actor_draw(a, &proj);
+			Actor* actor = pvector_at(&w->actors, Actor, i);
+			actor_draw(actor, &proj);
 		}
 	}
 
@@ -52,72 +33,47 @@ void world_tick(World* w, double deltaTime)
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////////////
+static Actor* set_actor_mesh(World* world, Actor* actor, const char* meshName)
+{
+	actor_clear(actor);
+	if (actor_mesh(actor, world_load_mesh(world, meshName)))
+	{
+		actor->material = world_load_material(world, 
+			"shaders/simple", actor->mesh->model->tex_name);
+	}
+	return actor;
+}
 
-void world_create(World* w)
+static void begin_play(World* world)
 {
 	glClearColor(0.25f, 0.25f, 0.25f, 1.0f);  // clear background to soft black
 
-	w->camPos    = vec3_new(0, 9, -14);
-	w->camTarget = vec3_new(0, 4, 0);
-	w->shaders  = shader_manager_create(16);
-	w->meshes   = mesh_manager_create(64);
-	w->textures = tex_manager_create(64);
+	world->camera->a.pos  = vec3_new(0, 9, -14);
+	world->camera->target = vec3_new(0, 4, 0);
 
-	Actor* a = &w->actors[w->numActors++];
-	actor_init(a);
-	if (actor_mesh(a, mesh_load(w->meshes, "statue_mage.bmd")))
-	{
-		Material m = material_from_file(w->shaders, "shaders/simple", 
-			                            w->textures, a->mesh->model->tex_name);
-		actor_material(a, &m);
-	}
+	Actor* statue = world_create_actor(world, "statue");
+	set_actor_mesh(world, statue, "statue_mage.bmd");
+}
+
+static void end_play(World* world)
+{
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void world_destroy(World* w)
-{
-	for (int i = 0; i < w->numActors; ++i)
-		actor_destroy(&w->actors[i]);
-	w->numActors = 0;
-	tex_manager_destroy(w->textures);
-	mesh_manager_destroy(w->meshes);
-	shader_manager_destroy(w->shaders);
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-
-void main_loop(World* w, GLFWwindow* window)
-{
-	glfwSetWindowUserPointer(window, w);
-	while (!glfwWindowShouldClose(window))
-	{
-		w->deltaTime = timer_elapsed_vsync(60.0);  // VSYNC framerate to 60fps
-
-		int fbw, fbh; // update screen size:
-		glfwGetFramebufferSize(window, &fbw, &fbh);
-		w->width = (float)fbw, w->height = (float)fbh;
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear background
-
-		world_tick(w, w->deltaTime);
-
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
-}
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	World* w = glfwGetWindowUserPointer(window);
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	World* world = glfwGetWindowUserPointer(window);
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
-
-	(void)w->deltaTime;
+	}
+	(void)world;
 }
 void btn_callback(GLFWwindow* window, int button, int action, int mods)
 {
-
+	World* world = glfwGetWindowUserPointer(window);
+	(void)world;
 }
 static void glfw_error(int err, const char* description)
 {
@@ -162,11 +118,17 @@ int main(int argc, char** argv)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST); 	
 
-	// enter world
-	World world = { 0 };
+	///////// create world ////////
+	World world;
 	world_create(&world);
-	main_loop(&world, window);
+	{
+		world.frame_tick = &frame_tick;
+		world.begin_play = &begin_play;
+		world.end_play   = &end_play;
+		world_main_loop(&world, window);
+	}
 	world_destroy(&world);
+	///////////////////////////////
 
 	glfwDestroyWindow(window);
 	glfwTerminate();

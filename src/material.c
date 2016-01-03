@@ -1,9 +1,8 @@
 #include "material.h"
-#include <GL/glew.h>
-#include <SOIL/SOIL.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "util.h"
+#include <GL/glew.h>   // glGenTextures etc.
+#include <SOIL/SOIL.h> // SOIL_load_image
+#include <stdlib.h>    // free
+#include "util.h"      // LOG
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -32,32 +31,13 @@ static bool _tex_load(Texture* tex, const char* fullPath)
 	return true;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
 TexManager* tex_manager_create(int maxCount) {
 	static int id = 0;
 	char name[32]; snprintf(name, 32, "tex_manager_$%d_[%d]", id++, maxCount);
 	return (TexManager*)res_manager_create(name, maxCount, sizeof(Texture), 
 		(ResMgr_LoadFunc)_tex_load, (ResMgr_FreeFunc)_tex_free);
 }
-Texture* tex_manager_data(TexManager* t) {
-	return (Texture*)res_manager_data(&t->rm);
-}
-Texture* texture_load(TexManager* t, const char* texturePath) {
-	return (Texture*)resource_load(&t->rm, texturePath);
-}
-void texture_free(Texture* tex) {
-	resource_free(&tex->res);
-}
-void tex_manager_clean_unused(TexManager* t) {
-	res_manager_clean_unused(&t->rm);
-}
-void tex_manager_destroy_all_items(TexManager* t) {
-	res_manager_destroy_all_items(&t->rm);
-}
-void tex_manager_destroy(TexManager* t) {
-	res_manager_destroy(&t->rm);
-}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 static const vec4 WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -70,20 +50,11 @@ Material material_create(Shader* shader, Texture* texture)
 	m.texture = texture;
 	return m;
 }
-Material material_from_file(ShaderManager* smgr, const char* shaderName, 
-                            TexManager*    tmgr, const char* texturePath)
-{
-	Material m;
-	m.color   = WHITE;
-	m.shader  = shader_load(smgr, shaderName);
-	m.texture = texture_load(tmgr, texturePath);
-	return m;
-}
 
 void material_destroy(Material* m)
 {
-	if (m->shader)  shader_free(m->shader), m->shader  = NULL;
-	if (m->texture) texture_free(m->texture),      m->texture = NULL;
+	if (m->shader)  resource_free(&m->shader->res),  m->shader  = NULL;
+	if (m->texture) resource_free(&m->texture->res), m->texture = NULL;
 }
 
 void material_move(Material* dst, Material* src)

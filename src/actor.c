@@ -1,26 +1,42 @@
 #include "actor.h"
 #include <string.h>
 #include "util.h"
+#include <stdlib.h>
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void actor_init(Actor* a)
+Actor* actor_create(const char* name)
 {
-	memset(a, 0, sizeof(*a));
+	Actor* a = malloc(sizeof(*a));
+	actor_init(a, name);
+	return a;
 }
 void actor_destroy(Actor* a)
+{
+	actor_clear(a);
+	free(a);
+}
+
+void actor_init(Actor* a, const char* name)
+{
+	memset(a, 0, sizeof(*a));
+	strncpy(a->name, name, sizeof(a->name));
+	a->scale = vec3_new(1.0f, 1.0f, 1.0f);
+}
+void actor_clear(Actor* a)
 {
 	actor_clear_mesh(a);
 	actor_clear_material(a);
 }
 void actor_clear_mesh(Actor * a)
 {
-	if (a->mesh) mesh_free(a->mesh);
+	if (a->mesh) resource_free(&a->mesh->res), a->mesh = 0;
 }
 void actor_clear_material(Actor* a)
 {
-	if (a->material.texture) material_destroy(&a->material);
+	if (a->material.texture) 
+		material_destroy(&a->material);
 }
 
 bool actor_mesh(Actor* a, StaticMesh* mesh)
@@ -36,13 +52,14 @@ bool actor_material(Actor* a, Material* mat)
 	return a->material.shader && a->material.texture;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
-static mat4* affine_transform(Actor* a, mat4* out)
+mat4 actor_affine_matrix(const Actor* a)
 {
-	mat4_identity(out);
-	return out;
+	mat4 mat = mat4_from_scale(a->scale);
+
+	return mat;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 void actor_draw(Actor* a, const mat4* viewProjection)
 {
@@ -56,8 +73,7 @@ void actor_draw(Actor* a, const mat4* viewProjection)
 
 	shader_bind(shader); // bind, but don't explicitly unbind
 	{
-		mat4 model;
-		affine_transform(a, &model);
+		mat4 model = actor_affine_matrix(a);
 		shader_bind_mat_mvp(shader, viewProjection, &model);
 		shader_bind_tex_diffuse(shader, texture->glTexture);
 

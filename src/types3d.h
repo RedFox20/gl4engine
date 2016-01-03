@@ -60,6 +60,23 @@ vec4 vec4_divf(vec4 a, float v);
 
 ////////////////////////////////////////////////////////////////////////////////
 
+
+// creates a quaternion rotation from an euler angle (degrees), rotation axis must be specified
+vec4 quat_angle_axis(float angle, vec3 axis);
+
+// creates a quaternion rotation from an euler angle (degrees), rotation axis must be specified
+vec4 quat_angle_axisf(float angle, float x, float y, float z);
+
+// creates a quaternion rotation from euler XYZ (degrees) rotation 
+vec4 quat_from_rotation(vec3 rotation);
+
+// rotates quaternion p with extra rotation p
+// q = additional rotation we wish to rotate with
+// p = original rotation
+vec4 quat_mul(vec4 q, vec4 p);
+
+////////////////////////////////////////////////////////////////////////////////
+
 typedef struct vertex_t
 {
 	union {
@@ -125,6 +142,9 @@ mat4* mat4_translate(mat4* m, vec3 offset);
 // rotates an object transformation matrix by given degree angle around a given axis
 mat4* mat4_rotate(mat4* m, float angleDegs, vec3 axis);
 
+// rotates an object transformation matrix by given degree angle around a given axis
+mat4* mat4_rotatef(mat4* m, float angleDegs, float x, float y, float z);
+
 // scales an object transformation matrix by a given scale factor
 mat4* mat4_scale(mat4* m, vec3 scale);
 
@@ -136,5 +156,11 @@ mat4 mat4_perspective(float fov, float width, float height, float zNear, float z
 
 // creates a lookat view/camera matrix
 mat4 mat4_lookat(vec3 eye, vec3 center, vec3 up);
+
+// creates a rotated matrix from euler XYZ rotation
+mat4 mat4_from_rotation(vec3 rotation);
+
+// creates a scaled matrix from XYZ scale
+mat4 mat4_from_scale(vec3 scale);
 
 ////////////////////////////////////////////////////////////////////////////////

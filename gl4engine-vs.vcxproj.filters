@@ -79,6 +79,12 @@
     <ClInclude Include="src\main.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\vector.h">
+      <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\material.c">
@@ -124,6 +130,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\main.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vector.c">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world.c">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -43,7 +43,7 @@ static void vao_set_attributes(vertex_descr* vd)
 	for (int i = 0, off = 0; off < vd->sizeOf; ++i) {
 		ShaderAttr a = (ShaderAttr)vd->items[i].attr; // attrib location
 		const int s  = (const int) vd->items[i].size; // attrib size in floats
-		glVertexAttribPointer(a, s, GL_FLOAT, GL_FALSE, vd->sizeOf, (void*)off);
+		glVertexAttribPointer(a, s, GL_FLOAT, 0, vd->sizeOf, (void*)off);
 		glEnableVertexAttribArray(a);
 		off += s * sizeof(float); // offset is in bytes
 	}
@@ -53,17 +53,17 @@ vertex_array* va_new_array(const void* vertices, int numVerts, vertex_descr vd)
 {
 	indebug(vd_validate(&vd));
 	vertex_array* v = malloc(sizeof(*v));
-	v->ibuf = 0;
-	v->num_verts = numVerts;
-	v->num_indices = 0;
-	v->vd = vd;
+	v->indexBuf    = 0;
+	v->vertexCount = numVerts;
+	v->indexCount  = 0;
+	v->descr       = vd;
 
-	glGenVertexArrays(1, &v->vao);
-	glBindVertexArray(v->vao);     // bind VAO to start recording
+	glGenVertexArrays(1, &v->arrayObj);
+	glBindVertexArray(v->arrayObj);     // bind VAO to start recording
 	{
 		// create & fill vertex buffer
-		glGenBuffers(1, &v->vbuf);
-		glBindBuffer(GL_ARRAY_BUFFER, v->vbuf);
+		glGenBuffers(1, &v->vertexBuf);
+		glBindBuffer(GL_ARRAY_BUFFER, v->vertexBuf);
 		glBufferData(GL_ARRAY_BUFFER, numVerts*vd.sizeOf, vertices, GL_STATIC_DRAW);
 		// set VAO vertex attributes
 		vao_set_attributes(&vd);
@@ -72,25 +72,26 @@ vertex_array* va_new_array(const void* vertices, int numVerts, vertex_descr vd)
 	return v;
 }
 
-vertex_array* va_new_indexed_array(const void* vtx, int nvtx, const index_t* ind, int nind, vertex_descr vd)
+vertex_array* va_new_indexed_array(const void* vptr, int vtxCnt, 
+                                   const index_t* iptr, int idxCnt, vertex_descr vd)
 {
 	indebug(vd_validate(&vd));
 	vertex_array* v = malloc(sizeof(*v));
-	v->num_verts = nvtx;
-	v->num_indices = nind;
-	v->vd = vd;
+	v->vertexCount = vtxCnt;
+	v->indexCount  = idxCnt;
+	v->descr       = vd;
 
-	glGenVertexArrays(1, &v->vao);
-	glBindVertexArray(v->vao);     // bind VAO to start recording
+	glGenVertexArrays(1, &v->arrayObj);
+	glBindVertexArray(v->arrayObj);     // bind VAO to start recording
 	{
 		// create and fill index buffer
-		glGenBuffers(1, &v->ibuf);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, v->ibuf);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, nind*sizeof(*ind), ind, GL_STATIC_DRAW);
+		glGenBuffers(1, &v->indexBuf);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, v->indexBuf);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, idxCnt*sizeof(*iptr), iptr, GL_STATIC_DRAW);
 		// create & fill vertex buffer
-		glGenBuffers(1, &v->vbuf);
-		glBindBuffer(GL_ARRAY_BUFFER, v->vbuf);
-		glBufferData(GL_ARRAY_BUFFER, nvtx*vd.sizeOf, vtx, GL_STATIC_DRAW);
+		glGenBuffers(1, &v->vertexBuf);
+		glBindBuffer(GL_ARRAY_BUFFER, v->vertexBuf);
+		glBufferData(GL_ARRAY_BUFFER, vtxCnt*vd.sizeOf, vptr, GL_STATIC_DRAW);
 		// set VAO vertex attributes
 		vao_set_attributes(&vd);
 	}
@@ -100,18 +101,18 @@ vertex_array* va_new_indexed_array(const void* vtx, int nvtx, const index_t* ind
 
 void va_destroy(vertex_array* va)
 {
-	if (va->vbuf) glDeleteBuffers(1, &va->vbuf), va->vbuf = 0;
-	if (va->ibuf) glDeleteBuffers(1, &va->ibuf), va->ibuf = 0;
-	if (va->vao)  glDeleteVertexArrays(1, &va->vao), va->vao = 0;
+	if (va->vertexBuf) glDeleteBuffers(1, &va->vertexBuf),     va->vertexBuf = 0;
+	if (va->indexBuf)  glDeleteBuffers(1, &va->indexBuf),      va->indexBuf  = 0;
+	if (va->arrayObj)  glDeleteVertexArrays(1, &va->arrayObj), va->arrayObj  = 0;
 	free(va);
 }
 
 void va_draw(vertex_array* va)
 {
-	glBindVertexArray(va->vao);
-	if (va->ibuf)
-		glDrawElements(GL_TRIANGLES, va->num_indices, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(va->arrayObj);
+	if (va->indexBuf)
+		glDrawElements(GL_TRIANGLES, va->indexCount, GL_UNSIGNED_INT, 0);
 	else
-		glDrawArrays(GL_TRIANGLES, 0, va->num_verts);
+		glDrawArrays(GL_TRIANGLES, 0, va->vertexCount);
 	glBindVertexArray(0);
 }

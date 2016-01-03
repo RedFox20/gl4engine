@@ -69,30 +69,14 @@ static bool _mesh_load(StaticMesh* sm, const char* fullPath)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-StaticMesh* mesh_load(MeshManager* m, const char* modelPath) {
-	return (StaticMesh*)resource_load(&m->rm, modelPath);
-}
-void mesh_free(StaticMesh* mesh) {
-	resource_free(&mesh->res);
-}
+
 MeshManager* mesh_manager_create(int maxCount) {
 	static int id = 0;
 	char name[32]; snprintf(name, 32, "mesh_manager_$%d_[%d]", id++, maxCount);
 	return (MeshManager*)res_manager_create(name, maxCount, sizeof(StaticMesh), 
 		(ResMgr_LoadFunc)_mesh_load, (ResMgr_FreeFunc)_mesh_free);
 }
-void mesh_manager_destroy(MeshManager* m) {
-	res_manager_destroy(&m->rm);
-}
-StaticMesh* mesh_manager_data(MeshManager* m) {
-	return (StaticMesh*)res_manager_data(&m->rm);
-}
-void mesh_manager_clean_unused(MeshManager* m) {
-	res_manager_clean_unused(&m->rm);
-}
-void mesh_manager_destroy_all_items(MeshManager* m) {
-	res_manager_destroy_all_items(&m->rm);
-}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -274,31 +274,12 @@ void shader_unbind_attributes(const Shader* s)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-
 // initializes a resource manager for ShaderManager Shader objects
 ShaderManager* shader_manager_create(int maxCount) {
 	static int id = 0;
 	char name[32]; snprintf(name, 32, "shader_manager_$%d_[%d]", id++, maxCount);
 	return (ShaderManager*)res_manager_create(name, maxCount, sizeof(Shader), 
 		(ResMgr_LoadFunc)shader_load_unmanaged, (ResMgr_FreeFunc)shader_free_unmanaged);
-}
-Shader* shader_manager_data(ShaderManager* m) {
-	return (Shader*)res_manager_data(&m->rm);
-}
-Shader* shader_load(ShaderManager* m, const char* shaderName) {
-	return (Shader*)resource_load(&m->rm, shaderName);
-}
-void shader_free(Shader* s) {
-	resource_free(&s->res);
-}
-void shader_manager_clean_unused(ShaderManager* m) {
-	res_manager_clean_unused(&m->rm);
-}
-void shader_manager_destroy_all_items(ShaderManager* m) {
-	res_manager_destroy_all_items(&m->rm);
-}
-void shader_manager_destroy(ShaderManager* m) {
-	res_manager_destroy(&m->rm);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

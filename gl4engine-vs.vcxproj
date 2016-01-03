@@ -104,7 +104,9 @@
     <ClInclude Include="src\types3d.h" />
     <ClInclude Include="src\utf8.h" />
     <ClInclude Include="src\util.h" />
+    <ClInclude Include="src\vector.h" />
     <ClInclude Include="src\vertex_array.h" />
+    <ClInclude Include="src\world.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GL\glew.c" />
@@ -121,7 +123,9 @@
     <ClCompile Include="src\types3d.c" />
     <ClCompile Include="src\utf8.c" />
     <ClCompile Include="src\util.c" />
+    <ClCompile Include="src\vector.c" />
     <ClCompile Include="src\vertex_array.c" />
+    <ClCompile Include="src\world.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\simple.frag" />
