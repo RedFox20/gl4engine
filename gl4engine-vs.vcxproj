@@ -12,8 +12,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{232AB7FA-9F8A-4B0A-B805-4992C54FD043}</ProjectGuid>
-    <RootNamespace>gl3enginevs</RootNamespace>
+    <RootNamespace>gl4enginevs</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>gl4engine-vs</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -129,7 +130,7 @@
     <None Include="data\shaders\v3f-t2f-c4f.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="src\gl3engine.natvis" />
+    <Natvis Include="src\gl4engine.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

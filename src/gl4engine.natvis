@@ -21,19 +21,46 @@
       <Item Name="[sqlength]">x*x + y*y + z*z + w*w</Item>
     </Expand>
   </Type>
+  <Type Name="_mat4_row_vis">
+    <DisplayString>{x} {y} {z} {w}</DisplayString>
+  </Type>
   <Type Name="mat4">
-    <DisplayString>mat 4x4</DisplayString>
+    <DisplayString>mat4 {vis0}</DisplayString>
     <Expand>
-      <Item Name="[row 0]">0.0</Item>
+      <Item Name="[m00 m01 m02 m03]">vis0</Item>
+      <Item Name="[m10 m11 m12 m13]">vis1</Item>
+      <Item Name="[m20 m21 m22 m23]">vis2</Item>
+      <Item Name="[m30 m31 m32 m33]">vis3</Item>
     </Expand>
   </Type>
-
   <Type Name="vertex_t">
     <DisplayString>{pos}</DisplayString>
     <Expand>
       <Item Name="[pos]">pos</Item>
       <Item Name="[tex]">tex</Item>
       <Item Name="[norm]">norm</Item>
+    </Expand>
+  </Type>
+
+  <!-- ///////////////////////////////////////////////////////////////////// -->
+
+  <Type Name="vertex_descr_elem">
+    <DisplayString Condition="size != 0">vec{(int)size} {(ShaderAttr)attr}</DisplayString>
+    <DisplayString Condition="size == 0">empty</DisplayString>
+    <Expand>
+      <Item Name="[attr]">(ShaderAttr)attr</Item>
+      <Item Name="[size]">(int)size</Item>
+    </Expand>
+  </Type>
+  
+  <Type Name="vertex_descr">
+    <DisplayString>sizeOf={sizeOf} [0]={items[0]}</DisplayString>
+    <Expand>
+      <Item Name="[sizeOf]">sizeOf</Item>
+      <ArrayItems>
+        <Size>sizeof(items)/sizeof(*items)</Size>
+        <ValuePointer>items</ValuePointer>
+      </ArrayItems>
     </Expand>
   </Type>
 

@@ -76,27 +76,40 @@ mat4* mat4_identity(mat4* m)
 
 mat4* mat4_mul(mat4* ma, const mat4* mb)
 {
-	float x = ma->m00, y = ma->m01, z = ma->m02, w = ma->m03;
-	ma->m00 = (mb->m00*x) + (mb->m10*y) + (mb->m20*z) + (mb->m30*w);
-	ma->m01 = (mb->m01*x) + (mb->m11*y) + (mb->m21*z) + (mb->m31*w);
-	ma->m02 = (mb->m02*x) + (mb->m12*y) + (mb->m22*z) + (mb->m32*w);
-	ma->m03 = (mb->m03*x) + (mb->m13*y) + (mb->m23*z) + (mb->m33*w);
-	x = ma->m10, y = ma->m11, z = ma->m12, w = ma->m13;
-	ma->m10 = (mb->m00*x) + (mb->m10*y) + (mb->m20*z) + (mb->m30*w);
-	ma->m11 = (mb->m01*x) + (mb->m11*y) + (mb->m21*z) + (mb->m31*w);
-	ma->m12 = (mb->m02*x) + (mb->m12*y) + (mb->m22*z) + (mb->m32*w);
-	ma->m13 = (mb->m03*x) + (mb->m13*y) + (mb->m23*z) + (mb->m33*w);
-	x = ma->m20, y = ma->m21, z = ma->m22, w = ma->m23;
-	ma->m20 = (mb->m00*x) + (mb->m10*y) + (mb->m20*z) + (mb->m30*w);
-	ma->m21 = (mb->m01*x) + (mb->m11*y) + (mb->m21*z) + (mb->m31*w);
-	ma->m22 = (mb->m02*x) + (mb->m12*y) + (mb->m22*z) + (mb->m32*w);
-	ma->m23 = (mb->m03*x) + (mb->m13*y) + (mb->m23*z) + (mb->m33*w);
-	x = ma->m30, y = ma->m31, z = ma->m32, w = ma->m33;
-	ma->m30 = (mb->m00*x) + (mb->m10*y) + (mb->m20*z) + (mb->m30*w);
-	ma->m31 = (mb->m01*x) + (mb->m11*y) + (mb->m21*z) + (mb->m31*w);
-	ma->m32 = (mb->m02*x) + (mb->m12*y) + (mb->m22*z) + (mb->m32*w);
-	ma->m33 = (mb->m03*x) + (mb->m13*y) + (mb->m23*z) + (mb->m33*w);
+	const vec4 a0 = ma->r0;
+	const vec4 a1 = ma->r1;
+	const vec4 a2 = ma->r2;
+	const vec4 a3 = ma->r3;
+	const vec4 b0 = mb->r0;
+	const vec4 b1 = mb->r1;
+	const vec4 b2 = mb->r2;
+	const vec4 b3 = mb->r3;
+	ma->r0 = vec4_add( vec4_add(vec4_mulf(a0,b0.x), vec4_mulf(a1,b0.y)),  vec4_add(vec4_mulf(a2,b0.z), vec4_mulf(a3,b0.w)) );
+	ma->r1 = vec4_add( vec4_add(vec4_mulf(a0,b1.x), vec4_mulf(a1,b1.y)),  vec4_add(vec4_mulf(a2,b1.z), vec4_mulf(a3,b1.w)) );
+	ma->r2 = vec4_add( vec4_add(vec4_mulf(a0,b2.x), vec4_mulf(a1,b2.y)),  vec4_add(vec4_mulf(a2,b2.z), vec4_mulf(a3,b2.w)) );
+	ma->r3 = vec4_add( vec4_add(vec4_mulf(a0,b3.x), vec4_mulf(a1,b3.y)),  vec4_add(vec4_mulf(a2,b3.z), vec4_mulf(a3,b3.w)) );
 	return ma;
+	//float x = ma->m00, y = ma->m01, z = ma->m02, w = ma->m03;
+	//ma->m00 = (mb->m00*x) + (mb->m10*y) + (mb->m20*z) + (mb->m30*w);
+	//ma->m01 = (mb->m01*x) + (mb->m11*y) + (mb->m21*z) + (mb->m31*w);
+	//ma->m02 = (mb->m02*x) + (mb->m12*y) + (mb->m22*z) + (mb->m32*w);
+	//ma->m03 = (mb->m03*x) + (mb->m13*y) + (mb->m23*z) + (mb->m33*w);
+	//x = ma->m10, y = ma->m11, z = ma->m12, w = ma->m13;
+	//ma->m10 = (mb->m00*x) + (mb->m10*y) + (mb->m20*z) + (mb->m30*w);
+	//ma->m11 = (mb->m01*x) + (mb->m11*y) + (mb->m21*z) + (mb->m31*w);
+	//ma->m12 = (mb->m02*x) + (mb->m12*y) + (mb->m22*z) + (mb->m32*w);
+	//ma->m13 = (mb->m03*x) + (mb->m13*y) + (mb->m23*z) + (mb->m33*w);
+	//x = ma->m20, y = ma->m21, z = ma->m22, w = ma->m23;
+	//ma->m20 = (mb->m00*x) + (mb->m10*y) + (mb->m20*z) + (mb->m30*w);
+	//ma->m21 = (mb->m01*x) + (mb->m11*y) + (mb->m21*z) + (mb->m31*w);
+	//ma->m22 = (mb->m02*x) + (mb->m12*y) + (mb->m22*z) + (mb->m32*w);
+	//ma->m23 = (mb->m03*x) + (mb->m13*y) + (mb->m23*z) + (mb->m33*w);
+	//x = ma->m30, y = ma->m31, z = ma->m32, w = ma->m33;
+	//ma->m30 = (mb->m00*x) + (mb->m10*y) + (mb->m20*z) + (mb->m30*w);
+	//ma->m31 = (mb->m01*x) + (mb->m11*y) + (mb->m21*z) + (mb->m31*w);
+	//ma->m32 = (mb->m02*x) + (mb->m12*y) + (mb->m22*z) + (mb->m32*w);
+	//ma->m33 = (mb->m03*x) + (mb->m13*y) + (mb->m23*z) + (mb->m33*w);
+	//return ma;
 }
 
 vec4 mat4_mul3(mat4* m, vec3 v)
@@ -106,6 +119,15 @@ vec4 mat4_mul3(mat4* m, vec3 v)
 		(m->m01*v.x) + (m->m11*v.y) + (m->m21*v.z) + m->m31,
 		(m->m02*v.x) + (m->m12*v.y) + (m->m22*v.z) + m->m32,
 		(m->m03*v.x) + (m->m13*v.y) + (m->m23*v.z) + m->m33
+	);
+}
+vec4 mat4_mul4(mat4* m, vec4 v)
+{
+	retvec4(
+		(m->m00*v.x) + (m->m10*v.y) + (m->m20*v.z) + (m->m30*v.w),
+		(m->m01*v.x) + (m->m11*v.y) + (m->m21*v.z) + (m->m31*v.w),
+		(m->m02*v.x) + (m->m12*v.y) + (m->m22*v.z) + (m->m32*v.w),
+		(m->m03*v.x) + (m->m13*v.y) + (m->m23*v.z) + (m->m33*v.w)
 	);
 }
 

@@ -10,3 +10,4 @@
 /gl3engine-vs.ilk
 /gl3engine-vs.pdb
 /gl3engine-vs.vcxproj.user
+*.user

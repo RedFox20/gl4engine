@@ -78,9 +78,18 @@ typedef struct vertex_t
 
 ////////////////////////////////////////////////////////////////////////////////
 // A 4x4 matrix for affine transformations
+
+typedef struct _mat4_row_vis
+{
+	float x,y,z,w;
+} _mat4_row_vis;
+
 typedef struct mat4
 {
 	union {
+		struct {
+			_mat4_row_vis vis0, vis1, vis2, vis3;
+		};
 		struct {
 			float m00, m01, m02, m03; // row0  0-3
 			float m10, m11, m12, m13; // row1  0-3
@@ -104,8 +113,11 @@ mat4* mat4_identity(mat4* m);
 // multiplies two matrices:  ma = ma * mb
 mat4* mat4_mul(mat4* ma, const mat4* mb);
 
-// transforms 3D vector v with this matrix and return a vec4
+// transforms 3D vector v with this matrix and return the resulting vec4
 vec4 mat4_mul3(mat4* m, vec3 v);
+
+// transforms 4D vector v with this matrix and returns the resulting vec4
+vec4 mat4_mul4(mat4* m, vec4 v);
 
 // translates object transformation matrix by given offset
 mat4* mat4_translate(mat4* m, vec3 offset);

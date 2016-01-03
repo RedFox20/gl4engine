@@ -30,17 +30,18 @@ void world_tick(World* w, double deltaTime)
 {
 	static vec3 UP = { 0.0f, 1.0f, 0.0f }; // OpenGL: Y is up
 
-	mat4 proj = mat4_perspective(45.0f, w->width, w->height, 1.0f, 1000.0f);
-	mat4 view = mat4_lookat(w->camPos, w->camTarget, UP);
-	mat4_mul(&proj, &view); // proj(viewprojMatrix) = proj * view
+	mat4 proj = mat4_perspective(45.0f, w->width, w->height, 0.1f, 10000.0f);
+	mat4 look = mat4_lookat(w->camPos, w->camTarget, UP);
+	mat4_mul(&proj, &look); // viewprojMatrix = proj * view
 
-	mat4_identity(&view);
+	//mat4 view = proj;
+	//mat4_identity(&view);
 	{
 		// render 3d scene
 		for (int i = 0; i < w->numActors; ++i)
 		{
 			Actor* a = &w->actors[i];
-			actor_draw(a, &view);
+			actor_draw(a, &proj);
 		}
 	}
 
@@ -114,13 +115,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	(void)w->deltaTime;
 }
+void btn_callback(GLFWwindow* window, int button, int action, int mods)
+{
+
+}
 static void glfw_error(int err, const char* description)
 {
 	LOG("GLFW error %d: %s\n", err, description);
-}
-
-void glfw_settings() {
-
 }
 
 int main(int argc, char** argv)
@@ -130,16 +131,14 @@ int main(int argc, char** argv)
 	if (!glfwInit())
 		return EXIT_FAILURE;
 
-	// do we even need these?
-	// changing one of these will reset context
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // OpenGL 3
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-	//glfwWindowHint(GLFW_SAMPLES, 2); // 2xMSAA
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,  GL_TRUE); // DEBUG OpenGL Driver
-	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // disable deprecated
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // OpenGL 4.3
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // disable deprecated
+	glfwWindowHint(GLFW_SAMPLES, 4); // 4xMSAA
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,  GL_TRUE); // DEBUG OpenGL Driver
 
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "OpenGL 3.3 with GLFW", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(1280, 720, "OpenGL 4.3 with GLFW", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		sleep_ms(2000);
@@ -148,6 +147,7 @@ int main(int argc, char** argv)
 
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, &key_callback);
+	glfwSetMouseButtonCallback(window, &btn_callback);
 	
 	////////////// Init GLEW /////////////
 	glewExperimental = true; // enable loading experimental OpenGL features
@@ -159,8 +159,6 @@ int main(int argc, char** argv)
 	}
 
 	////////////// init basic OpenGL //////////////
-	//glFrontFace(GL_CW); // CCW:default
-	glDisable(GL_CULL_FACE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST); 	
 

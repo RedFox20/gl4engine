@@ -142,7 +142,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="src\gl3engine.natvis">
+    <Natvis Include="src\gl4engine.natvis">
       <Filter>src\framework</Filter>
     </Natvis>
   </ItemGroup>

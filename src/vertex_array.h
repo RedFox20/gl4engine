@@ -3,14 +3,17 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// vertex layout descriptor
+// describes a single element in a vertex (visualized by .natvis)
+typedef struct vertex_descr_elem {
+	unsigned char attr; // ShaderAttr vertex attribute slot identifier (a_Position, etc.)
+	unsigned char size; // Number of elements per attribute (1-4 floats or ints)
+} vertex_descr_elem;
+
+// vertex layout descriptor (visualized by .natvis)
 typedef struct vertex_descr
 {
 	int sizeOf; // Size of your vertex struct in bytes eg: sizeof(Vertex3UV)
-	struct {
-		unsigned char attr; // ShaderAttr vertex attribute slot identifier (a_Position, etc.)
-		unsigned char size; // Number of elements per attribute (1-4 floats or ints)
-	} items[4];
+	vertex_descr_elem items[4];
 } vertex_descr;
 
 // vertex buffer object (uses VAO)
