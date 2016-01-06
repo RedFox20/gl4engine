@@ -52,11 +52,12 @@ bool actor_material(Actor* a, Material* mat)
 	return a->material.shader && a->material.texture;
 }
 
-mat4 actor_affine_matrix(const Actor* a)
+void actor_affine_matrix(mat4* out, const Actor* a)
 {
-	mat4 mat = mat4_from_scale(a->scale);
-
-	return mat;
+	*out = mat4_from_position(a->pos);
+	mat4_scale(out, a->scale);
+	mat4 rot = mat4_from_rotation(a->rot);
+	mat4_mul(out, &rot);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -73,16 +74,17 @@ void actor_draw(Actor* a, const mat4* viewProjection)
 
 	shader_bind(shader); // bind, but don't explicitly unbind
 	{
-		mat4 model = actor_affine_matrix(a);
+		mat4 model;
+		actor_affine_matrix(&model, a);
 		shader_bind_mat_mvp(shader, viewProjection, &model);
 		shader_bind_tex_diffuse(shader, texture->glTexture);
 
-		shader_bind_attributes(shader);
+		//shader_bind_attributes(shader);
 
 		// draw vertex_array bound to our mesh
 		va_draw(a->mesh->array);
 
-		shader_unbind_attributes(shader);
+		//shader_unbind_attributes(shader);
 	}
 }
 

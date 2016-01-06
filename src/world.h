@@ -10,6 +10,9 @@ typedef struct Camera // camera inherits from Actor, does not have any model
 	bool use_target; // true: use lookAt target
 } Camera;
 
+// pvector of T=Actor
+pvector_T(Actor);
+
 typedef struct World
 {
 	// general world context:
@@ -30,7 +33,7 @@ typedef struct World
 	Camera* camera;            // current camera actor
 	Camera  defaultCamera;     // default camera actor
 
-	pvector actors;            // vector<Actor*> all actors present in the World
+	pvectorActor actors;       // vector<Actor*> all actors present in the World
 
 } World;
 

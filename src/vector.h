@@ -45,6 +45,15 @@ typedef struct pvector
 	void** data;   // dynamic buffer of pointers 
 } pvector;
 
+#define pvector_T(TYPE) typedef union pvector##TYPE { \
+	pvector vec[1]; \
+	struct {        \
+		int size;           /* number of elements in vector */ \
+		int capacity;       /* maximum capacity */             \
+		struct TYPE** data; /* dynamic buffer of pointers */   \
+	};              \
+} pvector##TYPE;
+
 // @return Pointer to pvector data, cast to given type
 #define pvector_data(v, type)   ((type**)(v)->data)
 // @return Pointer of given type at index i
@@ -67,6 +76,6 @@ void pvector_append(pvector* v, void* item);
 /** @brief Erases the item at the given index */
 void pvector_erase(pvector* v, int index);
 /** @brief Inserts an item at the given index */
-void pvector_insert(pvector* v, int index, const void* item);
+void pvector_insert(pvector* v, int index, void* item);
 
 ////////////////////////////////////////////////////////////////////////////////

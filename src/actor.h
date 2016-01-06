@@ -6,16 +6,22 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+struct World;
+struct Actor;
+typedef void (*ActorTick)(struct World* world, struct Actor* actor, double deltaTime);
+
 typedef struct Actor // definition of a 3D actor in our scenes
 {
 	char name[32]; // unique actor name
 
-	vec3 pos; // XYZ position
-	vec3 rot; // euler XYZ rotation
+	vec3 pos;   // XYZ position
+	vec3 rot;   // euler XYZ rotation
 	vec3 scale; // XYZ scale
 
 	StaticMesh*  mesh;      // STRONG REF: 3D mesh
 	Material     material;  // STRONG REF: material (color, shader, texture)
+
+	ActorTick tick; // custom TICK function
 
 } Actor;
 
@@ -43,7 +49,7 @@ bool actor_material(Actor* a, Material* mat);
 ////////////////////////////////////////////////////////////////////////////////
 
 // gets the affine transformation matrix of this actor
-mat4 actor_affine_matrix(const Actor* a);
+void actor_affine_matrix(mat4* out, const Actor* a);
 
 // draws this model in the specified viewprojection
 // and in the context of an already bound shader

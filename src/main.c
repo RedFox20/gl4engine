@@ -12,17 +12,17 @@ static void frame_tick(World* w, double deltaTime)
 {
 	Camera* c = w->camera;
 	mat4 proj = mat4_perspective(45.0f, w->width, w->height, 0.1f, 10000.0f);
-	mat4 look = mat4_lookat(w->camera->a.pos, w->camera->target, UP);
+	mat4 look = mat4_lookat(c->a.pos, c->target, UP);
 	mat4_mul(&proj, &look); // viewprojMatrix = proj * view
 
 	//mat4 view = proj;
 	//mat4_identity(&view);
 	{
 		// render 3d scene
+		Actor** actors = w->actors.data;
 		for (int i = 0; i < w->actors.size; ++i)
 		{
-			Actor* actor = pvector_at(&w->actors, Actor, i);
-			actor_draw(actor, &proj);
+			actor_draw(actors[i], &proj);
 		}
 	}
 
@@ -31,6 +31,31 @@ static void frame_tick(World* w, double deltaTime)
 		// render user interface (if any)
 
 	}
+}
+
+static void statue_tick(World* world, Actor* a, double deltaTime)
+{
+	GLFWwindow* w = world->window;
+	vec3  dp = vec3_ZERO;
+	vec3  dr = vec3_ZERO;
+	float ds = 0.0f;
+	float dt = (float)deltaTime;
+
+	if (glfwGetKey(w, 'A')) dp.x += 5 * dt; // 5 coord/s
+	if (glfwGetKey(w, 'R')) dp.y += 5 * dt;
+	if (glfwGetKey(w, 'W')) dp.z += 5 * dt;
+	if (glfwGetKey(w, 'D')) dp.x -= 5 * dt;
+	if (glfwGetKey(w, 'F')) dp.y -= 5 * dt;
+	if (glfwGetKey(w, 'S')) dp.z -= 5 * dt;
+	if (glfwGetKey(w, 'Q')) dr.y += 120 * dt; // 120 deg/s
+	if (glfwGetKey(w, 'E')) dr.y -= 120 * dt; // 120 deg/s
+	if (glfwGetKey(w, 'Z')) ds = +1 * dt;
+	if (glfwGetKey(w, 'C')) ds = -1 * dt;
+	a->pos   = vec3_add(a->pos, dp);
+	a->rot   = vec3_add(a->rot, dr);
+	a->scale = vec3_addf(a->scale, ds);
+	printf("statue %.2f %.2f %.2f | %.0f %.0f %.0f | %.1f\n", 
+		a->pos.x,a->pos.y,a->pos.z,  a->rot.x, a->rot.y, a->rot.z, a->scale.x);
 }
 
 static Actor* set_actor_mesh(World* world, Actor* actor, const char* meshName)
@@ -53,6 +78,7 @@ static void begin_play(World* world)
 
 	Actor* statue = world_create_actor(world, "statue");
 	set_actor_mesh(world, statue, "statue_mage.bmd");
+	statue->tick = &statue_tick;
 }
 
 static void end_play(World* world)
@@ -65,8 +91,10 @@ static void end_play(World* world)
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	World* world = glfwGetWindowUserPointer(window);
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GL_TRUE);
+	if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+		if (key == GLFW_KEY_ESCAPE) {
+			glfwSetWindowShouldClose(window, GL_TRUE);
+		}
 	}
 	(void)world;
 }
@@ -117,6 +145,7 @@ int main(int argc, char** argv)
 	////////////// init basic OpenGL //////////////
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST); 	
+	glEnable(GL_DEPTH_TEST); // important!
 
 	///////// create world ////////
 	World world;

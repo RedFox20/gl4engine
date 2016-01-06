@@ -6,6 +6,13 @@
 #define retvec3(x,y,z)   vec3 _r = {x,y,z};   return _r
 #define retvec4(x,y,z,w) vec4 _r = {x,y,z,w}; return _r
 
+const vec2 vec2_ZERO;
+const vec3 vec3_ZERO;
+const vec4 vec4_ZERO;
+const vec3 vec3_XAXIS = {1,0,0};
+const vec3 vec3_YAXIS = {0,1,0};
+const vec3 vec3_ZAXIS = {0,0,1};
+
 ////////////////////////////////////////////////////////////////////////////////
 
 float radf(float degrees) {
@@ -253,19 +260,34 @@ mat4 mat4_lookat(vec3 eye, vec3 center, vec3 up) // create a lookat mat4
 	return r;
 }
 
+// creates a translated matrix from XYZ position
+mat4 mat4_from_position(vec3 position)
+{
+	mat4 m = IDENTITY;
+	mat4_translate(&m, position);
+	return m;
+}
+
 mat4 mat4_from_rotation(vec3 rotation)
 {
 	vec4 q = quat_from_rotation(rotation);
-	mat4 m = IDENTITY;
+	mat4 m;
 	m.m00 = 1 - 2 * q.y * q.y - 2 * q.z * q.z;
 	m.m01 = 2 * q.x * q.y + 2 * q.w * q.z;
 	m.m02 = 2 * q.x * q.z - 2 * q.w * q.y;
+	m.m03 = 0.0f;
 	m.m10 = 2 * q.x * q.y - 2 * q.w * q.z;
 	m.m11 = 1 - 2 * q.x * q.x - 2 * q.z * q.z;
 	m.m12 = 2 * q.y * q.z + 2 * q.w * q.x;
+	m.m13 = 0.0f;
 	m.m20 = 2 * q.x * q.z + 2 * q.w * q.y;
 	m.m21 = 2 * q.y * q.z - 2 * q.w * q.x;
 	m.m22 = 1 - 2 * q.x * q.x - 2 * q.y * q.y;
+	m.m23 = 0.0f;
+	m.m30 = 0.0f;
+	m.m31 = 0.0f;
+	m.m32 = 0.0f;
+	m.m33 = 1.0f;
 	return m;
 }
 

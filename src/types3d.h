@@ -23,6 +23,14 @@ typedef struct vec4
 	float x, y, z, w;
 } vec4; // 4D float vector - used for Quaternions and RGBA colors
 
+extern const vec2 vec2_ZERO; // Represents vec2 {0,0}
+extern const vec3 vec3_ZERO; // Represents vec3 {0,0,0}
+extern const vec4 vec4_ZERO; // Represents vec4 {0,0,0,0}
+
+extern const vec3 vec3_XAXIS; // Represents vec3 {1,0,0}
+extern const vec3 vec3_YAXIS; // Represents vec3 {0,1,0}
+extern const vec3 vec3_ZAXIS; // Represents vec3 {0,0,1}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 float vec2_len(vec2 v);
@@ -156,6 +164,9 @@ mat4 mat4_perspective(float fov, float width, float height, float zNear, float z
 
 // creates a lookat view/camera matrix
 mat4 mat4_lookat(vec3 eye, vec3 center, vec3 up);
+
+// creates a translated matrix from XYZ position
+mat4 mat4_from_position(vec3 position);
 
 // creates a rotated matrix from euler XYZ rotation
 mat4 mat4_from_rotation(vec3 rotation);

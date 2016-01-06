@@ -43,6 +43,7 @@ typedef struct ResManager
  * @param relativePath Relative path to resource file
  */ 
 Resource* resource_load(ResManager* rm, const char* relativePath);
+#define iresource_load(rm, path) resource_load((ResManager*)rm, path)
 
 /** @brief Decrements refcount, but does not free any resources! use resmgr_clean_unused() */
 void resource_free(Resource* res);
@@ -61,6 +62,7 @@ ResManager* res_manager_create(const char* name, int maxCount, int sizeOf,
 
 /** @brief Destroys the resource manager and all its items*/
 void res_manager_destroy(ResManager* rm);
+#define ires_manager_destroy(rm) res_manager_destroy((ResManager*)rm)
 
 /** @brief Returns pointer to the first resource element */
 Resource* res_manager_data(ResManager* rm);

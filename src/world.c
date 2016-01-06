@@ -11,30 +11,29 @@ void world_create(World* world)
 
 	world->camera = &world->defaultCamera;
 	actor_init(&world->defaultCamera.a, "defaultCamera");
-	pvector_create(&world->actors);
+	pvector_create(world->actors.vec);
 }
 
 void world_destroy(World* world)
 {
-	Actor** it = pvector_begin(&world->actors, Actor);
+	Actor** it  = pvector_begin(&world->actors, Actor);
 	Actor** end = pvector_end(&world->actors, Actor);
 	for (; it != end; ++it)
 		actor_destroy(*it);
 
 	actor_clear(&world->defaultCamera.a);
-	pvector_destroy(&world->actors);
+	pvector_destroy(world->actors.vec);
 
-	if (world->meshMgr)    res_manager_destroy(&world->meshMgr->rm);
-	if (world->textureMgr) res_manager_destroy(&world->textureMgr->rm);
-	if (world->shaderMgr)  res_manager_destroy(&world->shaderMgr->rm);
+	if (world->meshMgr)    ires_manager_destroy(world->meshMgr);
+	if (world->textureMgr) ires_manager_destroy(world->textureMgr);
+	if (world->shaderMgr)  ires_manager_destroy(world->shaderMgr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 static void update_screen_size(World* world, GLFWwindow* window)
 {
-	int width;
-	int height;
+	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	world->width  = (float)width;
 	world->height = (float)height;
@@ -54,9 +53,20 @@ void world_main_loop(World* world, GLFWwindow* window)
 
 	while (!glfwWindowShouldClose(window))
 	{
-		world->deltaTime = timer_elapsed_vsync(60.0);  // VSYNC framerate to 60fps
+		double deltaTime = world->deltaTime = timer_elapsed_vsync(60.0);  // VSYNC framerate to 60fps
 		update_screen_size(world, window);
 		{
+			//////// Update Actor tick ////////
+			int count      = world->actors.size;
+			Actor** actors = world->actors.data;
+			for (int i = 0; i < count; ++i) {
+				Actor* a = actors[i];
+				if (a->tick) {
+					a->tick(world, a, deltaTime);
+				}
+			}
+
+			//////// Render tick ////////
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			world->frame_tick(world, world->deltaTime);
 			glfwSwapBuffers(window);
@@ -74,14 +84,14 @@ void world_main_loop(World* world, GLFWwindow* window)
 Actor* world_create_actor(World* world, const char* name)
 {
 	Actor* actor = actor_create(name);
-	pvector_append(&world->actors, actor);
+	pvector_append(world->actors.vec, actor);
 	return actor;
 }
 
 Actor* world_find_actor(World* world, const char* name)
 {
-	Actor** it = pvector_data(&world->actors, Actor);
-	Actor** end = pvector_end(&world->actors, Actor);
+	Actor** it = pvector_data(world->actors.vec, Actor);
+	Actor** end = pvector_end(world->actors.vec, Actor);
 	for (; it != end; ++it)
 		if (strcmp((*it)->name, name) == 0)
 			return *it;
@@ -92,19 +102,19 @@ Shader* world_load_shader(World* world, const char* modelPath)
 {
 	if (!world->shaderMgr)
 		world->shaderMgr = shader_manager_create(32);
-	return (Shader*)resource_load(&world->shaderMgr->rm, modelPath);
+	return (Shader*)iresource_load(world->shaderMgr, modelPath);
 }
 StaticMesh* world_load_mesh(World* world, const char* modelPath)
 {
 	if (!world->meshMgr)
 		world->meshMgr = mesh_manager_create(64);
-	return (StaticMesh*)resource_load(&world->meshMgr->rm, modelPath);
+	return (StaticMesh*)iresource_load(world->meshMgr, modelPath);
 }
 Texture* world_load_texture(World* world, const char* modelPath)
 {
 	if (!world->textureMgr)
 		world->textureMgr = tex_manager_create(64);
-	return (Texture*)resource_load(&world->textureMgr->rm, modelPath);
+	return (Texture*)iresource_load(world->textureMgr, modelPath);
 }
 Material world_load_material(World* world, const char* shaderPath, const char* texturePath)
 {
