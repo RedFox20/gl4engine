@@ -73,8 +73,8 @@ static void begin_play(World* world)
 {
 	glClearColor(0.25f, 0.25f, 0.25f, 1.0f);  // clear background to soft black
 
-	world->camera->a.pos  = vec3_new(0, 9, -14);
-	world->camera->target = vec3_new(0, 4, 0);
+	world->camera->a.pos  = vec3_new(0, 12, 12);
+	world->camera->target = vec3_new(0, 5, 0);
 
 	Actor* statue = world_create_actor(world, "statue");
 	set_actor_mesh(world, statue, "statue_mage.bmd");
