@@ -26,7 +26,6 @@ typedef struct vec4
 extern const vec2 vec2_ZERO; // Represents vec2 {0,0}
 extern const vec3 vec3_ZERO; // Represents vec3 {0,0,0}
 extern const vec4 vec4_ZERO; // Represents vec4 {0,0,0,0}
-
 extern const vec3 vec3_XAXIS; // Represents vec3 {1,0,0}
 extern const vec3 vec3_YAXIS; // Represents vec3 {0,1,0}
 extern const vec3 vec3_ZAXIS; // Represents vec3 {0,0,1}
@@ -57,6 +56,7 @@ vec3 vec3_divf(vec3 a, float v);
 ////////////////////////////////////////////////////////////////////////////////
 
 vec4 vec4_new(float x, float y, float z, float w);
+void vec4_set(vec4* v, float x, float y, float z, float w);
 vec4 vec4_add(vec4 a, vec4 b);   // vec4 add:  r = a + b
 vec4 vec4_sub(vec4 a, vec4 b);   // vec4 sub:  r = a - b
 vec4 vec4_mul(vec4 a, vec4 b);   // vec4 mul:  r = a * b
@@ -157,21 +157,21 @@ mat4* mat4_rotatef(mat4* m, float angleDegs, float x, float y, float z);
 mat4* mat4_scale(mat4* m, vec3 scale);
 
 // creates an ortographic projection matrix
-mat4 mat4_ortho(float left, float right, float bottom, float top);
+mat4* mat4_ortho(mat4* out, float left, float right, float bottom, float top);
 
 // creates a perspective projection matrix
-mat4 mat4_perspective(float fov, float width, float height, float zNear, float zFar);
+mat4* mat4_perspective(mat4* out, float fov, float width, float height, float zNear, float zFar);
 
 // creates a lookat view/camera matrix
-mat4 mat4_lookat(vec3 eye, vec3 center, vec3 up);
+mat4* mat4_lookat(mat4* out, vec3 eye, vec3 center, vec3 up);
 
 // creates a translated matrix from XYZ position
-mat4 mat4_from_position(vec3 position);
+mat4* mat4_from_position(mat4* out, vec3 position);
 
 // creates a rotated matrix from euler XYZ rotation
-mat4 mat4_from_rotation(vec3 rotation);
+mat4* mat4_from_rotation(mat4* out, vec3 rotation);
 
 // creates a scaled matrix from XYZ scale
-mat4 mat4_from_scale(vec3 scale);
+mat4* mat4_from_scale(mat4* out, vec3 scale);
 
 ////////////////////////////////////////////////////////////////////////////////

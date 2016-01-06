@@ -57,6 +57,7 @@ vec3 vec3_divf(vec3 a, float v) { retvec3(a.x/v, a.y/v, a.z/v); }
 ////////////////////////////////////////////////////////////////////////////////
 
 vec4 vec4_new(float x, float y, float z, float w) { retvec4(x,y,z,w); }
+void vec4_set(vec4* v, float x, float y, float z, float w) { v->x=x,v->y=y,v->z=z,v->w=w; }
 vec4 vec4_add(vec4 a, vec4 b)   { retvec4(a.x+b.x, a.y+b.y, a.z+b.z, a.w+b.w); }
 vec4 vec4_sub(vec4 a, vec4 b)   { retvec4(a.x-b.x, a.y-b.y, a.z-b.z, a.w-b.w); }
 vec4 vec4_mul(vec4 a, vec4 b)   { retvec4(a.x*b.x, a.y*b.y, a.z*b.z, a.w*b.w); }
@@ -218,84 +219,76 @@ mat4* mat4_scale(mat4* m, vec3 scale)
 	return m;
 }
 
-mat4 mat4_ortho(float left, float right, float bottom, float top)
+mat4* mat4_ortho(mat4* m, float left, float right, float bottom, float top)
 {
 	const float rl = right - left;
 	const float tb = top - bottom;
-	const mat4 r = {{{
-		2.0f / rl, 0, 0, 0,
-		0, 2.0f / tb, 0, 0,
-		0, 0, -1.0f, 0,
-		-(right+left)/rl, -(top+bottom)/tb, 0, 1,
-	}}};
-	return r;
+	m->m00 = 2.0f / rl, m->m01 = 0.0f, m->m02 = 0.0f,  m->m03 = 0.0f;
+	m->m10 = 0.0f, m->m11 = 2.0f / tb, m->m12 = 0.0f,  m->m13 = 0.0f;
+	m->m20 = 0.0f, m->m21 = 0.0f,      m->m22 = -1.0f, m->m23 = 0.0f;
+	m->m30 = -(right+left)/rl, m->m31 = -(top+bottom)/tb, m->m32 = 0.0f, m->m33 = 1.0f;
+	return m;
 }
 
-mat4 mat4_perspective(float fov, float width, float height, float zNear, float zFar)
+mat4* mat4_perspective(mat4* m, float fov, float width, float height, float zNear, float zFar)
 {
 	const float rad2 = radf(fov) * 0.5f;
 	const float h = cosf(rad2) / sinf(rad2);
 	const float w = (h * height) / width;
 	const float range = zFar - zNear;
-	const mat4 r = {{{
-		w, 0, 0, 0, 
-		0, h, 0, 0, 
-		0, 0, -(zFar + zNear) / range, -1, 
-		0, 0, (-2.0f * zFar * zNear) / range, 1,
-	}}};
-	return r;
+	m->m00 = w, m->m01 = 0, m->m02 = 0, m->m03 = 0;
+	m->m10 = 0, m->m11 = h, m->m12 = 0, m->m13 = 0;
+	m->m20 = 0, m->m21 = 0, m->m22 = -(zFar + zNear) / range, m->m23 = -1;
+	m->m30 = 0, m->m31 = 0, m->m32 = (-2.0f * zFar * zNear) / range, m->m33 = 1;
+	return m;
 }
 
-mat4 mat4_lookat(vec3 eye, vec3 center, vec3 up) // create a lookat mat4
+mat4* mat4_lookat(mat4* m, vec3 eye, vec3 center, vec3 up) // create a lookat mat4
 {
 	const vec3 f = vec3_norm(vec3_sub(center, eye));
 	const vec3 s = vec3_norm(vec3_cross(f, vec3_norm(up)));
 	const vec3 u = vec3_cross(s, f);
-	const mat4 r = {{{
-		s.x, u.x, -f.x, 0.0f,
-		s.y, u.y, -f.y, 0.0f,
-		s.z, u.z, -f.z, 0.0f,
-		-vec3_dot(s,eye), -vec3_dot(u,eye), vec3_dot(f,eye), 1.0f,
-	}}};
-	return r;
+	m->m00 = s.x, m->m01 = u.x, m->m02 = -f.x, m->m03 = 0.0f;
+	m->m10 = s.y, m->m11 = u.y, m->m12 = -f.y, m->m13 = 0.0f;
+	m->m20 = s.z, m->m21 = u.z, m->m22 = -f.z, m->m23 = 0.0f;
+	m->m30 = -vec3_dot(s,eye), m->m31 = -vec3_dot(u,eye), m->m32 = vec3_dot(f,eye), m->m33 = 1.0f;
+	return m;
 }
 
 // creates a translated matrix from XYZ position
-mat4 mat4_from_position(vec3 position)
+mat4* mat4_from_position(mat4* m, vec3 pos)
 {
-	mat4 m = IDENTITY;
-	mat4_translate(&m, position);
-	return m;
+	*m = IDENTITY;
+	return mat4_translate(m, pos);
 }
 
-mat4 mat4_from_rotation(vec3 rotation)
+mat4* mat4_from_rotation(mat4* m, vec3 rotation)
 {
 	vec4 q = quat_from_rotation(rotation);
-	mat4 m;
-	m.m00 = 1 - 2 * q.y * q.y - 2 * q.z * q.z;
-	m.m01 = 2 * q.x * q.y + 2 * q.w * q.z;
-	m.m02 = 2 * q.x * q.z - 2 * q.w * q.y;
-	m.m03 = 0.0f;
-	m.m10 = 2 * q.x * q.y - 2 * q.w * q.z;
-	m.m11 = 1 - 2 * q.x * q.x - 2 * q.z * q.z;
-	m.m12 = 2 * q.y * q.z + 2 * q.w * q.x;
-	m.m13 = 0.0f;
-	m.m20 = 2 * q.x * q.z + 2 * q.w * q.y;
-	m.m21 = 2 * q.y * q.z - 2 * q.w * q.x;
-	m.m22 = 1 - 2 * q.x * q.x - 2 * q.y * q.y;
-	m.m23 = 0.0f;
-	m.m30 = 0.0f;
-	m.m31 = 0.0f;
-	m.m32 = 0.0f;
-	m.m33 = 1.0f;
+	m->m00 = 1 - 2 * q.y * q.y - 2 * q.z * q.z;
+	m->m01 = 2 * q.x * q.y + 2 * q.w * q.z;
+	m->m02 = 2 * q.x * q.z - 2 * q.w * q.y;
+	m->m03 = 0.0f;
+	m->m10 = 2 * q.x * q.y - 2 * q.w * q.z;
+	m->m11 = 1 - 2 * q.x * q.x - 2 * q.z * q.z;
+	m->m12 = 2 * q.y * q.z + 2 * q.w * q.x;
+	m->m13 = 0.0f;
+	m->m20 = 2 * q.x * q.z + 2 * q.w * q.y;
+	m->m21 = 2 * q.y * q.z - 2 * q.w * q.x;
+	m->m22 = 1 - 2 * q.x * q.x - 2 * q.y * q.y;
+	m->m23 = 0.0f;
+	m->m30 = 0.0f;
+	m->m31 = 0.0f;
+	m->m32 = 0.0f;
+	m->m33 = 1.0f;
 	return m;
 }
 
-mat4 mat4_from_scale(vec3 scale)
+mat4* mat4_from_scale(mat4* m, vec3 sc)
 {
-	mat4 m = IDENTITY;
-	m.m00 *= scale.x;
-	m.m11 *= scale.y;
-	m.m22 *= scale.z;
+	m->m00 = sc.x, m->m01 = 0.0f, m->m02 = 0.0f, m->m03 = 0.0f;
+	m->m10 = 0.0f, m->m11 = sc.y, m->m12 = 0.0f, m->m13 = 0.0f;
+	m->m20 = 0.0f, m->m21 = 0.0f, m->m22 = sc.z, m->m23 = 0.0f;
+	m->m30 = 0.0f, m->m31 = 0.0f, m->m32 = 0.0f, m->m33 = 1.0f;
 	return m;
 }

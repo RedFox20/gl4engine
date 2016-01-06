@@ -54,9 +54,10 @@ bool actor_material(Actor* a, Material* mat)
 
 void actor_affine_matrix(mat4* out, const Actor* a)
 {
-	*out = mat4_from_position(a->pos);
+	mat4_from_position(out, a->pos);
 	mat4_scale(out, a->scale);
-	mat4 rot = mat4_from_rotation(a->rot);
+	mat4 rot;
+	mat4_from_rotation(&rot, a->rot);
 	mat4_mul(out, &rot);
 }
 

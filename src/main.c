@@ -11,8 +11,10 @@ static vec3 UP = { 0.0f, 1.0f, 0.0f }; // OpenGL: Y is up
 static void frame_tick(World* w, double deltaTime)
 {
 	Camera* c = w->camera;
-	mat4 proj = mat4_perspective(45.0f, w->width, w->height, 0.1f, 10000.0f);
-	mat4 look = mat4_lookat(c->a.pos, c->target, UP);
+	mat4 proj, look;
+
+	mat4_perspective(&proj, 45.0f, w->width, w->height, 0.1f, 10000.0f);
+	mat4_lookat(&look, c->a.pos, c->target, UP);
 	mat4_mul(&proj, &look); // viewprojMatrix = proj * view
 
 	//mat4 view = proj;
@@ -26,7 +28,7 @@ static void frame_tick(World* w, double deltaTime)
 		}
 	}
 
-	proj = mat4_ortho(0.0f, w->width, 0.0f, w->height);
+	mat4_ortho(&proj, 0.0f, w->width, 0.0f, w->height);
 	{
 		// render user interface (if any)
 
@@ -41,16 +43,20 @@ static void statue_tick(World* world, Actor* a, double deltaTime)
 	float ds = 0.0f;
 	float dt = (float)deltaTime;
 
-	if (glfwGetKey(w, 'A')) dp.x += 5 * dt; // 5 coord/s
+	if (glfwGetKey(w, 'D')) dp.x += 5 * dt;
 	if (glfwGetKey(w, 'R')) dp.y += 5 * dt;
-	if (glfwGetKey(w, 'W')) dp.z += 5 * dt;
-	if (glfwGetKey(w, 'D')) dp.x -= 5 * dt;
+	if (glfwGetKey(w, 'S')) dp.z += 5 * dt;
+	if (glfwGetKey(w, 'A')) dp.x -= 5 * dt; 
 	if (glfwGetKey(w, 'F')) dp.y -= 5 * dt;
-	if (glfwGetKey(w, 'S')) dp.z -= 5 * dt;
+	if (glfwGetKey(w, 'W')) dp.z -= 5 * dt;
 	if (glfwGetKey(w, 'Q')) dr.y += 120 * dt; // 120 deg/s
 	if (glfwGetKey(w, 'E')) dr.y -= 120 * dt; // 120 deg/s
-	if (glfwGetKey(w, 'Z')) ds = +1 * dt;
-	if (glfwGetKey(w, 'C')) ds = -1 * dt;
+	if (glfwGetKey(w, 'T')) dr.x += 120 * dt;
+	if (glfwGetKey(w, 'G')) dr.x -= 120 * dt;
+	if (glfwGetKey(w, 'Z')) dr.z += 120 * dt;
+	if (glfwGetKey(w, 'C')) dr.z -= 120 * dt;
+	//if (glfwGetKey(w, 'Z')) ds = +1 * dt;
+	//if (glfwGetKey(w, 'C')) ds = -1 * dt;
 	a->pos   = vec3_add(a->pos, dp);
 	a->rot   = vec3_add(a->rot, dr);
 	a->scale = vec3_addf(a->scale, ds);
