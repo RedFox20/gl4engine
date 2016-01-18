@@ -1,7 +1,12 @@
 
 ///	DDS file support, does decoding, _not_ direct uploading
 ///	(use SOIL for that ;-)
+#ifndef STBI_DDS_AUG_C_INCLUDED
+#define STBI_DDS_AUG_C_INCLUDED
 
+
+#ifndef STBI_DDS_HEADER_DEFINED
+#define STBI_DDS_HEADER_DEFINED
 ///	A bunch of DirectDraw Surface structures and flags
 typedef struct {
     unsigned int    dwMagic;
@@ -70,6 +75,8 @@ typedef struct {
 #define DDSCAPS2_CUBEMAP_POSITIVEZ	0x00004000
 #define DDSCAPS2_CUBEMAP_NEGATIVEZ	0x00008000
 #define DDSCAPS2_VOLUME	0x00200000
+
+#endif // STBI_DDS_HEADER_DEFINED
 
 static int dds_test(stbi *s)
 {
@@ -509,3 +516,5 @@ stbi_uc *stbi_dds_load_from_memory (stbi_uc const *buffer, int len, int *x, int 
    start_mem(&s,buffer, len);
    return dds_load(&s,x,y,comp,req_comp);
 }
+
+#endif // STBI_DDS_AUG_C_INCLUDED

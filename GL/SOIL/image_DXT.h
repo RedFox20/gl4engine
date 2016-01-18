@@ -45,6 +45,8 @@ convert_image_to_DXT5
     int *out_size
 );
 
+#ifndef STBI_DDS_HEADER_DEFINED
+#define STBI_DDS_HEADER_DEFINED
 /**	A bunch of DirectDraw Surface structures and flags **/
 typedef struct
 {
@@ -119,5 +121,7 @@ DDS_header ;
 #define DDSCAPS2_CUBEMAP_POSITIVEZ	0x00004000
 #define DDSCAPS2_CUBEMAP_NEGATIVEZ	0x00008000
 #define DDSCAPS2_VOLUME	0x00200000
+
+#endif // STBI_DDS_HEADER_DEFINED
 
 #endif /* HEADER_IMAGE_DXT	*/

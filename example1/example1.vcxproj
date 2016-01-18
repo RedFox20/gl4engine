@@ -65,19 +65,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <NMakeBuildCommandLine>make debug example1</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>cd .. &amp;&amp; make debug example1</NMakeBuildCommandLine>
     <NMakeOutput>$(SolutionDir)bin/example1.exe</NMakeOutput>
-    <NMakeCleanCommandLine>make clean</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>make clean debug example1</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>cd .. &amp;&amp; make clean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>cd .. &amp;&amp; make clean debug example1</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_WIN32;DEBUG;GLEW_STATIC;FREEGLUT_STATIC;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>./../include;./../;./../GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <IncludePath>./../include;./../;./../GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <NMakeBuildCommandLine>make release example1</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>cd .. &amp;&amp; make release example1</NMakeBuildCommandLine>
     <NMakeOutput>$(SolutionDir)bin/example1.exe</NMakeOutput>
-    <NMakeCleanCommandLine>make clean</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>make clean release example1</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>cd .. &amp;&amp; make clean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>cd .. &amp;&amp; make clean release example1</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_WIN32;NDEBUG;GLEW_STATIC;FREEGLUT_STATIC;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>./../include;./../;./../GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <IncludePath>./../include;./../;./../GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
