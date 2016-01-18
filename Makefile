@@ -1,6 +1,6 @@
 SRCS   = $(wildcard src/*.c)
 OBJS   = $(SRCS:src/%.c=obj/%.o)
-CFLAGS = -DGLEW_STATIC -DFREEGLUT_STATIC -m32 -march=native -mfpmath=sse -std=gnu11 -I. -IGL/ -Wall -Wno-unused-result -Wno-missing-braces
+CFLAGS = -DGLEW_STATIC -DFREEGLUT_STATIC -m32 -march=native -mfpmath=sse -std=gnu11 -Iinclude/ -I. -IGL/ -Wall -Wno-unused-result -Wno-missing-braces
 ifeq ($(OS),Windows_NT)
  OUT    = gl4engine.exe
  FORMAT = win32
@@ -40,7 +40,10 @@ endif
 $(OUT): obj GL/libglew.a GL/libsoil.a $(OBJS)
 	@echo link $(OUT)
 	@gcc -m32 -o $(OUT) obj/*.o $(OPENGL) $(SYSLIB)
-obj/%.o: src/%.c src/%.h
+obj/%.o: src/%.c include/%.h
+	@echo " gcc c11 native32  $*.c"
+	@gcc $(CFLAGS) -c src/$*.c -o obj/$*.o -MD
+obj/%.o: src/%.c
 	@echo " gcc c11 native32  $*.c"
 	@gcc $(CFLAGS) -c src/$*.c -o obj/$*.o -MD
 obj:

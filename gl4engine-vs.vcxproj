@@ -46,13 +46,13 @@
     <IntDir>obj\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)</OutDir>
     <TargetName>$(ProjectName)</TargetName>
-    <IncludePath>./;./GL;$(IncludePath)</IncludePath>
+    <IncludePath>./include;./GL;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>obj\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)</OutDir>
     <TargetName>$(ProjectName)</TargetName>
-    <IncludePath>./;./GL;$(IncludePath)</IncludePath>
+    <IncludePath>./include;./GL;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -95,18 +95,18 @@
     <ClInclude Include="GL\SOIL\stbi_DDS_aug.h" />
     <ClInclude Include="GL\SOIL\stbi_DDS_aug_c.h" />
     <ClInclude Include="GL\SOIL\stb_image_aug.h" />
-    <ClInclude Include="src\actor.h" />
-    <ClInclude Include="src\main.h" />
-    <ClInclude Include="src\material.h" />
-    <ClInclude Include="src\mesh.h" />
-    <ClInclude Include="src\resource.h" />
-    <ClInclude Include="src\shader.h" />
-    <ClInclude Include="src\types3d.h" />
-    <ClInclude Include="src\utf8.h" />
-    <ClInclude Include="src\util.h" />
-    <ClInclude Include="src\vector.h" />
-    <ClInclude Include="src\vertex_array.h" />
-    <ClInclude Include="src\world.h" />
+    <ClInclude Include="include\actor.h" />
+    <ClInclude Include="include\gl4e.h" />
+    <ClInclude Include="include\material.h" />
+    <ClInclude Include="include\mesh.h" />
+    <ClInclude Include="include\resource.h" />
+    <ClInclude Include="include\shader.h" />
+    <ClInclude Include="include\types3d.h" />
+    <ClInclude Include="include\utf8.h" />
+    <ClInclude Include="include\util.h" />
+    <ClInclude Include="include\vector.h" />
+    <ClInclude Include="include\vertex_array.h" />
+    <ClInclude Include="include\world.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GL\glew.c" />
@@ -134,7 +134,7 @@
     <None Include="data\shaders\v3f-t2f-c4f.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="src\gl4engine.natvis" />
+    <Natvis Include="include\gl4e.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

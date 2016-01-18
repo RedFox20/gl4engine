@@ -5,78 +5,87 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="GL\glew.c">
-      <Filter>GL</Filter>
+      <Filter>src\GL</Filter>
     </ClCompile>
     <ClCompile Include="GL\SOIL\SOIL.c">
-      <Filter>SOIL</Filter>
+      <Filter>src\SOIL</Filter>
     </ClCompile>
     <ClCompile Include="src\material.c">
-      <Filter>src\framework</Filter>
+      <Filter>src\gl4e</Filter>
     </ClCompile>
     <ClCompile Include="src\mesh.c">
-      <Filter>src\framework</Filter>
+      <Filter>src\gl4e</Filter>
     </ClCompile>
     <ClCompile Include="src\resource.c">
-      <Filter>src\framework</Filter>
+      <Filter>src\gl4e</Filter>
     </ClCompile>
     <ClCompile Include="src\shader.c">
-      <Filter>src\framework</Filter>
+      <Filter>src\gl4e</Filter>
     </ClCompile>
     <ClCompile Include="src\vertex_array.c">
-      <Filter>src\framework</Filter>
+      <Filter>src\gl4e</Filter>
     </ClCompile>
     <ClCompile Include="src\types3d.c">
-      <Filter>src\framework</Filter>
+      <Filter>src\gl4e</Filter>
     </ClCompile>
     <ClCompile Include="src\actor.c">
-      <Filter>src</Filter>
+      <Filter>src\gl4e</Filter>
     </ClCompile>
-    <ClCompile Include="src\utf8.c">
-      <Filter>src\util</Filter>
+    <ClCompile Include="src\world.c">
+      <Filter>src\gl4e</Filter>
     </ClCompile>
     <ClCompile Include="src\util.c">
-      <Filter>src\util</Filter>
+      <Filter>src\gl4e</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utf8.c">
+      <Filter>src\gl4e</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\main.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="GL\glew.h">
-      <Filter>GL</Filter>
+      <Filter>src\GL</Filter>
     </ClInclude>
     <ClInclude Include="GL\glfw3.h">
-      <Filter>GL</Filter>
+      <Filter>src\GL</Filter>
     </ClInclude>
     <ClInclude Include="GL\SOIL\SOIL.h">
-      <Filter>SOIL</Filter>
+      <Filter>src\SOIL</Filter>
     </ClInclude>
-    <ClInclude Include="src\material.h">
-      <Filter>src\framework</Filter>
+    <ClInclude Include="include\actor.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\mesh.h">
-      <Filter>src\framework</Filter>
+    <ClInclude Include="include\gl4e.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\resource.h">
-      <Filter>src\framework</Filter>
+    <ClInclude Include="include\material.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader.h">
-      <Filter>src\framework</Filter>
+    <ClInclude Include="include\mesh.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\vertex_array.h">
-      <Filter>src\framework</Filter>
+    <ClInclude Include="include\resource.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\types3d.h">
-      <Filter>src\framework</Filter>
+    <ClInclude Include="include\shader.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\actor.h">
-      <Filter>src</Filter>
+    <ClInclude Include="include\types3d.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\util.h">
-      <Filter>src\util</Filter>
+    <ClInclude Include="include\utf8.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\utf8.h">
-      <Filter>src\util</Filter>
+    <ClInclude Include="include\util.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vertex_array.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\world.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -101,20 +110,25 @@
     <Filter Include="data">
       <UniqueIdentifier>{c09d6e6c-4a31-49bb-8577-5d15a3eb1dbf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GL">
-      <UniqueIdentifier>{5f539bb6-1512-44ed-9e45-4d932fc02676}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SOIL">
-      <UniqueIdentifier>{782342c3-f969-4e84-9dca-7e9d6affee67}</UniqueIdentifier>
-    </Filter>
     <Filter Include="data\shaders">
       <UniqueIdentifier>{f045ba73-924c-4005-99b6-3b1ef90ef414}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\framework">
+    <Filter Include="src\SOIL">
+      <UniqueIdentifier>{782342c3-f969-4e84-9dca-7e9d6affee67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GL">
+      <UniqueIdentifier>{5f539bb6-1512-44ed-9e45-4d932fc02676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{0aa78df6-ca92-49a4-876b-8412e7c3774f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gl4e">
       <UniqueIdentifier>{adecc997-2d18-467b-8582-a21cbb6fd741}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util">
-      <UniqueIdentifier>{526097eb-7ede-4aef-a1dc-44b6089ef4e4}</UniqueIdentifier>
-    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="include\gl4e.natvis">
+      <Filter>include</Filter>
+    </Natvis>
   </ItemGroup>
 </Project>

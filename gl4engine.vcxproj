@@ -14,16 +14,18 @@
     <ClInclude Include="GL\glew.h" />
     <ClInclude Include="GL\glfw3.h" />
     <ClInclude Include="GL\SOIL\SOIL.h" />
-    <ClInclude Include="src\actor.h" />
-    <ClInclude Include="src\material.h" />
-    <ClInclude Include="src\main.h" />
-    <ClInclude Include="src\mesh.h" />
-    <ClInclude Include="src\resource.h" />
-    <ClInclude Include="src\shader.h" />
-    <ClInclude Include="src\types3d.h" />
-    <ClInclude Include="src\utf8.h" />
-    <ClInclude Include="src\util.h" />
-    <ClInclude Include="src\vertex_array.h" />
+    <ClInclude Include="include\actor.h" />
+    <ClInclude Include="include\gl4e.h" />
+    <ClInclude Include="include\material.h" />
+    <ClInclude Include="include\mesh.h" />
+    <ClInclude Include="include\resource.h" />
+    <ClInclude Include="include\shader.h" />
+    <ClInclude Include="include\types3d.h" />
+    <ClInclude Include="include\utf8.h" />
+    <ClInclude Include="include\util.h" />
+    <ClInclude Include="include\vector.h" />
+    <ClInclude Include="include\vertex_array.h" />
+    <ClInclude Include="include\world.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GL\glew.c" />
@@ -38,6 +40,7 @@
     <ClCompile Include="src\utf8.c" />
     <ClCompile Include="src\util.c" />
     <ClCompile Include="src\vertex_array.c" />
+    <ClCompile Include="src\world.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\simple.frag">
@@ -48,6 +51,9 @@
     <None Include="data\shaders\v3f-t2f-c4f.frag" />
     <None Include="data\shaders\v3f-t2f-c4f.vert" />
     <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="include\gl4e.natvis" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{434B8059-26AC-452F-8AC5-B27829773444}</ProjectGuid>
@@ -86,7 +92,7 @@
     <NMakeIncludeSearchPath>./;./src;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <OutDir>./</OutDir>
     <IntDir>obj</IntDir>
-    <IncludePath>./;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>./include;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeBuildCommandLine>make release</NMakeBuildCommandLine>
@@ -97,7 +103,7 @@
     <NMakeIncludeSearchPath>./;./src;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <OutDir>./</OutDir>
     <IntDir>obj</IntDir>
-    <IncludePath>./;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>./include;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <BuildLog>

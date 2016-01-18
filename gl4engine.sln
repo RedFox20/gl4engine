@@ -7,20 +7,36 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl4engine", "gl4engine.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl4engine-vs", "gl4engine-vs.vcxproj", "{232AB7FA-9F8A-4B0A-B805-4992C54FD043}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example1", "example1\example1.vcxproj", "{45C129DD-5AFD-4E16-96CD-26D3DD73836A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{434B8059-26AC-452F-8AC5-B27829773444}.Debug|x64.ActiveCfg = Debug|Win32
 		{434B8059-26AC-452F-8AC5-B27829773444}.Debug|x86.ActiveCfg = Debug|Win32
 		{434B8059-26AC-452F-8AC5-B27829773444}.Debug|x86.Build.0 = Debug|Win32
+		{434B8059-26AC-452F-8AC5-B27829773444}.Release|x64.ActiveCfg = Release|Win32
 		{434B8059-26AC-452F-8AC5-B27829773444}.Release|x86.ActiveCfg = Release|Win32
 		{434B8059-26AC-452F-8AC5-B27829773444}.Release|x86.Build.0 = Release|Win32
+		{232AB7FA-9F8A-4B0A-B805-4992C54FD043}.Debug|x64.ActiveCfg = Debug|Win32
 		{232AB7FA-9F8A-4B0A-B805-4992C54FD043}.Debug|x86.ActiveCfg = Debug|Win32
 		{232AB7FA-9F8A-4B0A-B805-4992C54FD043}.Debug|x86.Build.0 = Debug|Win32
+		{232AB7FA-9F8A-4B0A-B805-4992C54FD043}.Release|x64.ActiveCfg = Release|Win32
 		{232AB7FA-9F8A-4B0A-B805-4992C54FD043}.Release|x86.ActiveCfg = Release|Win32
 		{232AB7FA-9F8A-4B0A-B805-4992C54FD043}.Release|x86.Build.0 = Release|Win32
+		{45C129DD-5AFD-4E16-96CD-26D3DD73836A}.Debug|x64.ActiveCfg = Debug|x64
+		{45C129DD-5AFD-4E16-96CD-26D3DD73836A}.Debug|x64.Build.0 = Debug|x64
+		{45C129DD-5AFD-4E16-96CD-26D3DD73836A}.Debug|x86.ActiveCfg = Debug|Win32
+		{45C129DD-5AFD-4E16-96CD-26D3DD73836A}.Debug|x86.Build.0 = Debug|Win32
+		{45C129DD-5AFD-4E16-96CD-26D3DD73836A}.Release|x64.ActiveCfg = Release|x64
+		{45C129DD-5AFD-4E16-96CD-26D3DD73836A}.Release|x64.Build.0 = Release|x64
+		{45C129DD-5AFD-4E16-96CD-26D3DD73836A}.Release|x86.ActiveCfg = Release|Win32
+		{45C129DD-5AFD-4E16-96CD-26D3DD73836A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

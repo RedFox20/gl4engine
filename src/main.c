@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <GL/glfw3.h>
-#include "main.h"
+#include <stdlib.h>
+#include <string.h>
 #include "util.h"
 #include "world.h"
 
