@@ -18,3 +18,10 @@
 /gl4engine.log
 /gl4engine.sdf
 /example1/Debug
+/bin/example1-vs.exe
+/bin/example1-vs.ilk
+/bin/example1-vs.pdb
+/bin/example1.exe
+/bin/gl4e.a
+/bin/gl4engine-vs.lib
+/bin/gl4engine-vs.pdb

@@ -89,8 +89,8 @@
     <NMakeReBuildCommandLine>make clean debug</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_WIN32;DEBUG;GLEW_STATIC;FREEGLUT_STATIC;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>./include;./;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
-    <OutDir>./</OutDir>
-    <IntDir>obj</IntDir>
+    <OutDir>$(SolutionDir)obj</OutDir>
+    <IntDir>$(SolutionDir)obj</IntDir>
     <IncludePath>./include;./;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -100,18 +100,18 @@
     <NMakeReBuildCommandLine>make clean release</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_WIN32;NDEBUG;GLEW_STATIC;FREEGLUT_STATIC;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>./include;./;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
-    <OutDir>./</OutDir>
-    <IntDir>obj</IntDir>
+    <OutDir>$(SolutionDir)obj</OutDir>
+    <IntDir>$(SolutionDir)obj</IntDir>
     <IncludePath>./include;./;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <BuildLog>
-      <Path>./$(ProjectName).log</Path>
+      <Path>$(IntDir)$(MSBuildProjectName).log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <BuildLog>
-      <Path>./$(ProjectName).log</Path>
+      <Path>$(IntDir)$(MSBuildProjectName).log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -21,7 +21,7 @@ debug:   CFLAGS += -g -DDEBUG=1 -O1
 debug:   $(LIBOUT)
 example1: bin/$(SAMPLE)
 clean:
-	@rm -rf ./obj ./$(LIBOUT) ./bin/$(SAMPLE)
+	@rm -rf ./obj/*.o ./obj/*.d ./obj/*.mri ./$(LIBOUT) ./bin/$(SAMPLE)
 libs: obj GL/libglew.a GL/libsoil.a
 cleanlibs:
 	@rm -rf ./GL/libglew.a ./GL/libsoil.a
