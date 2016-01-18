@@ -32,7 +32,6 @@
     <ClCompile Include="GL\SOIL\SOIL.c" />
     <ClCompile Include="src\actor.c" />
     <ClCompile Include="src\material.c" />
-    <ClCompile Include="src\main.c" />
     <ClCompile Include="src\mesh.c" />
     <ClCompile Include="src\resource.c" />
     <ClCompile Include="src\shader.c" />
@@ -87,23 +86,23 @@
     <NMakeBuildCommandLine>make debug</NMakeBuildCommandLine>
     <NMakeOutput>gl4engine.exe</NMakeOutput>
     <NMakeCleanCommandLine>make clean</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>make clean &amp;&amp; make debug</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine>make clean debug</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_WIN32;DEBUG;GLEW_STATIC;FREEGLUT_STATIC;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>./;./src;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>./include;./;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <OutDir>./</OutDir>
     <IntDir>obj</IntDir>
-    <IncludePath>./include;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>./include;./;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeBuildCommandLine>make release</NMakeBuildCommandLine>
     <NMakeOutput>gl4engine.exe</NMakeOutput>
     <NMakeCleanCommandLine>make clean</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>make clean &amp;&amp; make release</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine>make clean release</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_WIN32;NDEBUG;GLEW_STATIC;FREEGLUT_STATIC;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>./;./src;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>./include;./;./GL;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <OutDir>./</OutDir>
     <IntDir>obj</IntDir>
-    <IncludePath>./include;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>./include;./;./GL;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <BuildLog>

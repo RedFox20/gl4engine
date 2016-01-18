@@ -1,44 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\main.c">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="GL\glew.c">
       <Filter>src\GL</Filter>
     </ClCompile>
     <ClCompile Include="GL\SOIL\SOIL.c">
       <Filter>src\SOIL</Filter>
     </ClCompile>
-    <ClCompile Include="src\material.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mesh.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\resource.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\vertex_array.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\types3d.c">
-      <Filter>src\gl4e</Filter>
+    <ClCompile Include="src\world.c">
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\actor.c">
-      <Filter>src\gl4e</Filter>
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\world.c">
-      <Filter>src\gl4e</Filter>
+    <ClCompile Include="src\material.c">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\util.c">
-      <Filter>src\gl4e</Filter>
+    <ClCompile Include="src\mesh.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\types3d.c">
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\utf8.c">
-      <Filter>src\gl4e</Filter>
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vertex_array.c">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,9 +118,6 @@
     </Filter>
     <Filter Include="include">
       <UniqueIdentifier>{0aa78df6-ca92-49a4-876b-8412e7c3774f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\gl4e">
-      <UniqueIdentifier>{adecc997-2d18-467b-8582-a21cbb6fd741}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -14,14 +14,11 @@
     <Filter Include="include">
       <UniqueIdentifier>{70329f62-f701-41df-8b9d-e5e6160fa9f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\GL">
-      <UniqueIdentifier>{3c19d5f9-4a35-4511-9784-e085f69941ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\SOIL">
       <UniqueIdentifier>{13f6f684-4d63-4711-a935-75a69440aa97}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\gl4e">
-      <UniqueIdentifier>{8b748807-bb57-4890-838b-aaf81cf0e79b}</UniqueIdentifier>
+    <Filter Include="src\GL">
+      <UniqueIdentifier>{3c19d5f9-4a35-4511-9784-e085f69941ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,24 +84,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\material.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mesh.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\resource.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\vertex_array.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\types3d.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
     <ClCompile Include="GL\SOIL\image_DXT.c">
       <Filter>src\SOIL</Filter>
     </ClCompile>
@@ -120,23 +99,38 @@
     <ClCompile Include="GL\glew.c">
       <Filter>src\GL</Filter>
     </ClCompile>
-    <ClCompile Include="src\main.c">
+    <ClCompile Include="src\actor.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\material.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mesh.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\types3d.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utf8.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util.c">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\vector.c">
-      <Filter>src\gl4e</Filter>
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\actor.c">
-      <Filter>src\gl4e</Filter>
+    <ClCompile Include="src\vertex_array.c">
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\world.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utf8.c">
-      <Filter>src\gl4e</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util.c">
-      <Filter>src\gl4e</Filter>
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

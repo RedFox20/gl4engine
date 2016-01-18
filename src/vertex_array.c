@@ -6,6 +6,7 @@
 #include "util.h"
 
 // validate correctness of vertex descr layout
+#if DEBUG
 static void vd_validate(vertex_descr* vd)
 {
 	int offset = 0;
@@ -19,6 +20,7 @@ static void vd_validate(vertex_descr* vd)
 	}
 	assert(offset == vd->sizeOf && "Invalid layout: end offset does not match vertex_descr sizeOf!");
 }
+#endif
 
 vertex_descr vd_create(int sizeOf, ShaderAttr attr0, int size0, ...)
 {
@@ -111,8 +113,12 @@ void va_draw(vertex_array* va)
 {
 	glBindVertexArray(va->arrayObj);
 	if (va->indexBuf)
+	{
 		glDrawElements(GL_TRIANGLES, va->indexCount, GL_UNSIGNED_INT, 0);
+	}
 	else
+	{
 		glDrawArrays(GL_TRIANGLES, 0, va->vertexCount);
+	}
 	glBindVertexArray(0);
 }

@@ -1,30 +1,36 @@
-SRCS   = $(wildcard src/*.c)
-OBJS   = $(SRCS:src/%.c=obj/%.o)
-CFLAGS = -DGLEW_STATIC -DFREEGLUT_STATIC -m32 -march=native -mfpmath=sse -std=gnu11 -Iinclude/ -I. -IGL/ -Wall -Wno-unused-result -Wno-missing-braces
+LIBSRCS = $(wildcard src/*.c)
+LIBOBJS = $(LIBSRCS:src/%.c=obj/%.o)
+LIBOUT  = bin/gl4e.a
+CFLAGS  = -DGLEW_STATIC -DFREEGLUT_STATIC -m32 -march=native -mfpmath=sse -std=gnu11 -Iinclude/ -I. -IGL/ -Wall -Wno-unused-result -Wno-missing-braces
 ifeq ($(OS),Windows_NT)
- OUT    = gl4engine.exe
+ SAMPLE = example1.exe
  FORMAT = win32
- OPENGL = GL/libglfw3-mingw32.a GL/libfreetype-mingw32.a GL/libglew.a GL/libsoil.a -lopengl32 
- SYSLIB = -lwinmm -lgdi32 -lmsvcrt
+ OPENGL = GL/libglfw3-mingw32.a GL/libfreetype-mingw32.a GL/libglew.a GL/libsoil.a 
+ SYSLIB = -lwinmm -lgdi32 -lmsvcrt -lopengl32 
 else
- OUT    = gl4engine
+ SAMPLE = example1
  FORMAT = elf32
- OPENGL = GL/libglfw3-linux32.a GL/libfreetype-linux32.a GL/libglew.a GL/libsoil.a -lGL
- SYSLIB = 
+ OPENGL = GL/libglfw3-linux32.a GL/libfreetype-linux32.a GL/libglew.a GL/libsoil.a
+ SYSLIB = -lGL
 endif
 
-all: debug
+all: release
 release: CFLAGS += -g -DNDEBUG=1 -O3
-release: $(OUT)
+release: $(LIBOUT)
 debug:   CFLAGS += -g -DDEBUG=1 -O1
-debug:   $(OUT)
+debug:   $(LIBOUT)
+example1: bin/$(SAMPLE)
 clean:
-	@rm -rf ./obj ./$(OUT)
-run: all
-	./$(OUT)
+	@rm -rf ./obj ./$(LIBOUT) ./bin/$(SAMPLE)
+libs: GL/libglew.a GL/libsoil.a
+cleanlibs:
+	@rm -rf ./GL/libglew.a ./GL/libsoil.a
+run: release example1
+	./$(SAMPLE)
 gdb: debug
-	@gdb -q -x gdbinit $(OUT)
-	
+	@gdb -q -x gdbinit $(LIBOUT)
+
+#######################################################################
 ## make install - only on linux
 ifeq ($(OS),Windows_NT)
 install:
@@ -37,9 +43,24 @@ endif
 # declare autodeps
 -include obj/*.d
 
-$(OUT): obj GL/libglew.a GL/libsoil.a $(OBJS)
-	@echo link $(OUT)
-	@gcc -m32 -o $(OUT) obj/*.o $(OPENGL) $(SYSLIB)
+#######################################################################
+## Examples
+bin/$(SAMPLE): $(LIBOUT) example1/example1.c
+	@echo " gcc c11 native32  example1.c"
+	@gcc $(CFLAGS) -c example1/example1.c -o obj/example1.o -MD
+	@echo link bin/$(SAMPLE)
+	@gcc -m32 -o bin/$(SAMPLE) obj/example1.o $(LIBOUT) $(SYSLIB)
+
+#######################################################################
+## gl4e.a - A flat static library, with all the deps inside.
+$(LIBOUT): obj GL/libglew.a GL/libsoil.a $(LIBOBJS)
+	@echo "  ar $(LIBOUT)    OpenGL 4.3 Library"
+	@echo "CREATE $(LIBOUT)" > obj/gl4e.mri
+	@for a in $(OPENGL);  do (echo "ADDLIB $$a" >> obj/gl4e.mri); done
+	@for a in $(LIBOBJS); do (echo "ADDMOD $$a" >> obj/gl4e.mri); done
+	@echo "SAVE" >> obj/gl4e.mri
+	@echo "END"  >> obj/gl4e.mri
+	@ar -M < obj/gl4e.mri
 obj/%.o: src/%.c include/%.h
 	@echo " gcc c11 native32  $*.c"
 	@gcc $(CFLAGS) -c src/$*.c -o obj/$*.o -MD
@@ -48,20 +69,24 @@ obj/%.o: src/%.c
 	@gcc $(CFLAGS) -c src/$*.c -o obj/$*.o -MD
 obj:
 	@mkdir obj
-	
+
+#######################################################################
 ## GLEW 
 GL/libglew.a:
 	@echo " gcc libglew.a   OpenGL Extension Wrangler"
 	@gcc $(CFLAGS) -c GL/glew.c -o obj/glew.o
 	@ar rcs GL/libglew.a obj/glew.o
 
+#######################################################################
 ## SOIL
 SOILSRC = $(wildcard GL/SOIL/*.c)
-SOILOBJ = $(SOILSRC:GL/SOIL/%.c=obj/%.o)
+SOILOBJ = $(SOILSRC:GL/SOIL/%.c=obj/SOIL/%.o)
 obj/%.o: GL/SOIL/%.c GL/SOIL/%.h
-	@gcc $(CFLAGS) -Wno-unused-but-set-variable -c GL/SOIL/$*.c -o obj/$*.o -MD
-.PHONY: libsoil
+	@gcc $(CFLAGS) -Wno-unused-but-set-variable -c GL/SOIL/$*.c -o obj/SOIL/$*.o -MD
+.PHONY: libsoil libsoilcl
 libsoil:
 	@echo " gcc libsoil.a   Simple OpenGL Image Library"
-GL/libsoil.a: obj $(SOILOBJ)
+libsoilcl: $(SOILOBJ)
+GL/libsoil.a: libsoil $(SOILOBJ)
+#@libsoilcl
 	@ar rcs GL/libsoil.a $(SOILOBJ)
