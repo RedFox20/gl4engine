@@ -18,7 +18,7 @@ index_t* model_indices(BMDModel* model)
 static void _mesh_free(StaticMesh* sm)
 {
 	if (sm->model) free(sm->model);
-	if (sm->array)  va_destroy(sm->array);
+	if (sm->array) va_destroy(sm->array);
 }
 static bool _mesh_load(StaticMesh* sm, const char* fullPath)
 {
@@ -54,16 +54,16 @@ static bool _mesh_load(StaticMesh* sm, const char* fullPath)
 		printf("  NumVertices  %d\n", m->num_verts);
 		printf("  NumIndices   %d\n", m->num_indices);
 		printf("  Polys        %d\n", m->num_indices/3);
-		vertex_t* verts   = model_vertices(m);
-		index_t*  indices = model_indices(m);
-		for (int i = 0; i < 20 && i < m->num_verts; ++i) {
-			vertex_t* v = &verts[i];
-			printf("  v%d   %f,	%f,	%f	%f,	%f\n", i,v->x,v->y,v->z, v->u,v->v);
-		}
-		for (int i = 0; i < 20 && i < m->num_indices; i += 3) {
-			printf("  f%d    %d %d %d\n", (i/3), indices[i], indices[i+1], indices[i+2]);
-		}
-		printf("-------------------\n");
+		//vertex_t* verts   = model_vertices(m);
+		//index_t*  indices = model_indices(m);
+		//for (int i = 0; i < 20 && i < m->num_verts; ++i) {
+		//	vertex_t* v = &verts[i];
+		//	printf("  v%d   %f,	%f,	%f	%f,	%f\n", i,v->x,v->y,v->z, v->u,v->v);
+		//}
+		//for (int i = 0; i < 20 && i < m->num_indices; i += 3) {
+		//	printf("  f%d    %d %d %d\n", (i/3), indices[i], indices[i+1], indices[i+2]);
+		//}
+		//printf("-------------------\n");
 	#endif
 	return true;
 }

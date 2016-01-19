@@ -32,10 +32,7 @@ typedef struct StaticMesh
 	vertex_array*  array; // STRONG REF: GPU vertex array object
 } StaticMesh;
 
-typedef struct MeshManager
-{
-	ResManager rm;
-} MeshManager;
+typedef struct MeshManager { ResManager rm; } MeshManager;
 
 // initializes a resource manager for StaticMesh objects
 MeshManager* mesh_manager_create(int maxCount);

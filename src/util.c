@@ -39,40 +39,31 @@
 		}
 		return hash;
 	}
-	
-	const char* datapath(const char* filename)
-	{
-		// we keep multiple buffers for datapath (@note: not threadsafe)
-		static char bufs[6][512];
-		static int i = 0;
-		char* buf = bufs[i];
-		if (++i >= 6) i = 0;
 
-		snprintf(buf, 512, "data/%s", filename);
-		return buf;
-	}
-
-	char* normalize_path(char* dst, int dstSize, const char* relativePath)
+	char* normalize_path(char* dst, const char* relativePath)
 	{
 		char cwd[512]; getcwd(cwd, 512);
 		char buf[512]; _fullpath(buf, relativePath, 512);
 		int clen = strlen(cwd);
 		char* src = memcmp(buf, cwd, clen) == 0 ? buf + clen + 1 : buf;
-		return strncpy(dst, src, dstSize);
+		return strcpy(dst, src);
 	}
 
-	char* normalized_datapath(char* dst, int dstSize, const char* relativePath)
+	char* normalized_datapath(char* dst, const char* relativePath)
 	{
-		snprintf(dst, dstSize, "data/%s", relativePath);
-		return normalize_path(dst, dstSize, dst);
+		memcpy(dst, "data/", 5);
+		strcpy(dst+5, relativePath);
+		return normalize_path(dst, dst);
 	}
 
-	const char* filepart(const char* filePath)
+	const char* filepart(const char* filePath, int len)
 	{
-		const char* name = filePath;
-		for (const char* p; (p = strpbrk(name, "/\\")); ) 
-			name = p+1;
-		return name;
+		const char* ptr = filePath;
+		const char* end = filePath + len - 1;
+		for (; ptr < end; --end)
+			if (*end == '\\' || *end == '/')
+				return end + 1;
+		return ptr;
 	}
 	
 	double timer_elapsed_vsync(double desiredFPS)

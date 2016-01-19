@@ -27,30 +27,25 @@ int fsize(FILE* f);
 unsigned long long fnv64(const void* data, size_t length);
 
 /**
- * Gets a "data/filename" string from the input "filename"
- */
-const char* datapath(const char* filename);
-
-/**
  * Normalizes a relative path string
  * DST buffer must have room for at least PATH_MAX bytes
  * ex before: ./data/models/../something.ext
  * ex after:  data/models/something.ext
  */
-char* normalize_path(char* dst, int dstSize, const char* relativePath);
+char* normalize_path(char* dst, const char* relativePath);
 
 /**
  * Gets a normalized "data/filepath" string
  * @see datapath
  * @see normalize_path
  */
-char* normalized_datapath(char* dst, int dstSize, const char* relativePath);
+char* normalized_datapath(char* dst, const char* relativePath);
 
 /**
  * Gets the filepart from a path string.
  * ex: data/somefile.ext ==> somefile.ext
  */
-const char* filepart(const char* str);
+const char* filepart(const char* str, int len);
 
 /**
  * Combines frame_vsync(dt) and timer_elapsed() to wait

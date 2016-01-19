@@ -7,11 +7,11 @@
 /** A generic managed resource, contains a reference count and resource path ID */
 typedef struct Resource
 {
-	int      refcount;      // @warning: not threadsafe (!)
+	int      refcount;      // @warning: not threadsafe (!!)
 	struct ResManager* mgr; // reference to manager
 	int      hlen;          // length of path string
 	int      fphlen;        // length of path filepart string
-	uint64_t hash;          // 64-bit path hash
+	//uint64_t KEY;         // 64-bit path hash
 	uint64_t fphash;        // 64-bit filepart hash
 	char*    path;          // path for debugging
 } Resource;
@@ -22,15 +22,16 @@ typedef void (*ResMgr_FreeFunc)(Resource* res);
 /** Generic file resource manager for managing assets we do not wish to load multiple times */ 
 typedef struct ResManager
 {
-	char name[32]; // a small unique name identifier for the resource manager
+	int count;    // number of alive/loaded items
+	int sizeOf;   // sizeof a single item
+	int maxCount; // maximum number of elements we can allocate
 
 	ResMgr_LoadFunc load; // resource load func
 	ResMgr_FreeFunc free; // resource free func
 
-	int maxCount; // maximum number of elements we can allocate
-	int sizeOf;   // sizeof a single item
-	int count;    // number of alive/loaded items
+	char name[32]; // a small unique name identifier for the resource manager
 
+	// array of [uint64 * maxCount] hash keys
 	// array of [sizeOf * maxCount] items follow
 } ResManager;
 
@@ -43,10 +44,11 @@ typedef struct ResManager
  * @param relativePath Relative path to resource file
  */ 
 Resource* resource_load(ResManager* rm, const char* relativePath);
-#define iresource_load(rm, path) resource_load((ResManager*)rm, path)
+#define iresource_load(resmgr, path) resource_load(&resmgr->rm, path)
 
 /** @brief Decrements refcount, but does not free any resources! use resmgr_clean_unused() */
 void resource_free(Resource* res);
+#define iresource_free(resource) resource_free(&resource->res)
 
 /**
  * @brief Dynamically creates a new Resource Manager
@@ -62,7 +64,7 @@ ResManager* res_manager_create(const char* name, int maxCount, int sizeOf,
 
 /** @brief Destroys the resource manager and all its items*/
 void res_manager_destroy(ResManager* rm);
-#define ires_manager_destroy(rm) res_manager_destroy((ResManager*)rm)
+#define ires_manager_destroy(resmgr) res_manager_destroy(&resmgr->rm)
 
 /** @brief Returns pointer to the first resource element */
 Resource* res_manager_data(ResManager* rm);

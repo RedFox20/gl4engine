@@ -14,7 +14,7 @@ static void _tex_free(Texture* tex)
 static bool _tex_load(Texture* tex, const char* fullPath)
 {
 	int width, height;
-	unsigned char* image = SOIL_load_image(fullPath, &width, &height, 0, SOIL_LOAD_RGBA);
+	uint8_t* image = SOIL_load_image(fullPath, &width, &height, 0, SOIL_LOAD_RGBA);
 	if (!image) {
 		LOG("load_image() failed: '%s'\n", fullPath);
 		return false;
@@ -53,8 +53,8 @@ Material material_create(Shader* shader, Texture* texture)
 
 void material_destroy(Material* m)
 {
-	if (m->shader)  resource_free(&m->shader->res),  m->shader  = NULL;
-	if (m->texture) resource_free(&m->texture->res), m->texture = NULL;
+	if (m->shader)  iresource_free(m->shader),  m->shader  = NULL;
+	if (m->texture) iresource_free(m->texture), m->texture = NULL;
 }
 
 void material_move(Material* dst, Material* src)

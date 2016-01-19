@@ -53,10 +53,7 @@ typedef struct Shader
 
 } Shader;
 
-typedef struct ShaderManager
-{
-	ResManager rm;
-} ShaderManager;
+typedef struct ShaderManager { ResManager rm; } ShaderManager;
 
 // initializes a resource manager for Shader objects
 ShaderManager* shader_manager_create(int maxCount);

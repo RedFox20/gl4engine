@@ -12,10 +12,7 @@ typedef struct Texture
 	void*    data;      // STRONG REF: loaded image data (NULL by default, opt to retain)
 } Texture;
 
-typedef struct TexManager 
-{
-	ResManager rm;
-} TexManager;
+typedef struct TexManager { ResManager rm; } TexManager;
 
 // inititalizes generic resource manager as a texture manager
 TexManager* tex_manager_create(int maxCount);

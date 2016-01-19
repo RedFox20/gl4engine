@@ -58,8 +58,8 @@ static void statue_tick(World* world, Actor* a, double deltaTime)
 	a->pos   = vec3_add(a->pos, dp);
 	a->rot   = vec3_add(a->rot, dr);
 	a->scale = vec3_addf(a->scale, ds);
-	printf("statue %.2f %.2f %.2f | %.0f %.0f %.0f | %.1f\n", 
-		a->pos.x,a->pos.y,a->pos.z,  a->rot.x, a->rot.y, a->rot.z, a->scale.x);
+	//printf("statue %.2f %.2f %.2f | %.0f %.0f %.0f | %.1f\n", 
+	//	a->pos.x,a->pos.y,a->pos.z,  a->rot.x, a->rot.y, a->rot.z, a->scale.x);
 }
 
 static Actor* set_actor_mesh(World* world, Actor* actor, const char* meshName)
@@ -100,12 +100,21 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			glfwSetWindowShouldClose(window, GL_TRUE);
 		}
 	}
-	(void)world;
+	if (action == GLFW_PRESS) {
+		Actor* statue = world_find_actor(world, "statue");
+		const char* model = NULL;
+		switch (key) {
+			case GLFW_KEY_1: model = "statue_mage.bmd";    break;
+			case GLFW_KEY_2: model = "dark_fighter_6.bmd"; break;
+			case GLFW_KEY_3: model = "ARC_170.bmd";        break;
+		}
+		if (model) set_actor_mesh(world, statue, model);
+	}
 }
 void btn_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	World* world = glfwGetWindowUserPointer(window);
-	(void)world;
+	//World* world = glfwGetWindowUserPointer(window);
+	printf("button: %d\n", button);
 }
 static void glfw_error(int err, const char* description)
 {
